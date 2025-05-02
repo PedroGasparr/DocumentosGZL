@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Documentos</title>
+    <style>
+        :root {
+            --primary-color: #302592;
+            --secondary-color: #e0e421;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #28244d;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Layout Principal */
+        .container {
+            display: none;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        /* Cabeçalho */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        @media (min-width: 768px) {
+            header {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 1rem 2rem;
+            }
+        }
+        
+        header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            header h1 {
+                margin-bottom: 0;
+            }
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        @media (min-width: 768px) {
+            nav {
+                gap: 1rem;
+                flex-wrap: nowrap;
+            }
+        }
+        
+        nav button, .nav-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        
+        @media (min-width: 768px) {
+            nav button, .nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+            }
+        }
+        
+        nav button:hover, .nav-btn:hover {
+            background-color: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn.active {
+            background-color: var(--secondary-color);
+            font-weight: bold;
+        }
+        
+        /* Login */
+        #loginContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--dark-color);
+            padding: 20px;
+            background-image: linear-gradient(135deg, var(--primary-color) 0%, var(--dark-color) 100%);
+        }
+        /* Adicione ao seu CSS existente */
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: white;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+        
+        .login-box {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .login-box h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        /* Formulários */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+            width: 100%;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn:hover {
+            background-color: #afb656;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background-color: #7f8c8d;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #6c7a7d;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        /* Responsividade para formulários */
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .form-row {
+                flex-direction: row;
+            }
+            
+            .form-row .form-group {
+                flex: 1;
+            }
+        }
+        
+        /* Cadastro de Documentos */
+        .documento-item {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--secondary-color);
+            transition: all 0.3s;
+        }
+        
+        .documento-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .documento-item label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .documento-item input[type="file"] {
+            padding: 0.5rem;
+            border: 1px dashed #ddd;
+            background-color: #f9f9f9;
+        }
+        
+        .documento-item input[type="file"]:focus {
+            border-color: var(--secondary-color);
+        }
+        
+        /* Lista de Funcionários */
+        .funcionarios-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        @media (min-width: 480px) {
+            .funcionarios-list {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        .funcionario-card {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .funcionario-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .funcionario-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .funcionario-card p {
+            color: #555;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .progress-container {
+            margin: 1rem 0;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--secondary-color);
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            text-align: right;
+        }
+        
+        .download-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: auto;
+            font-size: 0.9rem;
+            text-align: center;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .download-btn:hover {
+            background-color: #abad31;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* Visualização de Documentos */
+        .documentos-container {
+            margin-top: 2rem;
+        }
+        
+        .documento-view {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .documento-view p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .documento-view strong {
+            color: var(--primary-color);
+        }
+        
+        /* Modal de Senha */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .modal-actions .btn {
+            margin-top: 0;
+            width: auto;
+        }
+        
+        /* Controle de Pessoas */
+        #listaPessoas {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (min-width: 768px) {
+            #listaPessoas {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        .pessoa-card {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        
+        .pessoa-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .pessoa-card h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .pessoa-card p {
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-size: 0.9rem;
+        }
+        
+        .status-enviado {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+        
+        .status-pendente {
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+        
+        .pessoa-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .pessoa-actions button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .pessoa-actions button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .btn-remover {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-remover:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-atualizar {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-atualizar:hover {
+            background-color: #9da533;
+        }
+        
+        /* Filtros */
+        .search-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-container input {
+            padding-left: 2.5rem;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%237f8c8d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
+            background-repeat: no-repeat;
+            background-position: 1rem center;
+        }
+        
+        /* Alertas */
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .alert-success {
+            background-color: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid var(--success-color);
+            color: var(--success-color);
+        }
+        
+        .alert-error {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+        
+        /* Loader */
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsividade adicional */
+        @media (max-width: 480px) {
+            .pessoa-actions {
+                flex-direction: column;
+            }
+            
+            .pessoa-actions button {
+                width: 100%;
+            }
+        }
+        </style>
+</head>
+<body>
+    <!-- Página de Login -->
+    <div id="loginContainer">
+        <div class="login-box">
+            <h1>Sistema de Documentos</h1>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" required>
+                </div>
+                <button type="submit" class="btn">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sistema Principal (inicialmente oculto) -->
+    <div id="appContainer" style="display: none;">
+        <header>
+            <h1>Sistema de Documentos</h1>
+            <nav>
+                <button class="nav-btn active" data-page="cadastro">Cadastrar</button>
+                <button class="nav-btn" data-page="funcionarios" id="funcionariosBtn">Funcionários</button>
+                <button class="nav-btn" data-page="controlePessoas" id="controlePessoasBtn">Controle de Pessoas</button>
+                <button id="logoutBtn">Sair</button>
+            </nav>
+        </header>
+
+        <!-- Página de Cadastro -->
+        <div id="cadastro" class="container active">
+            <h2>Cadastro de Documentos</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nome">Nome Completo</label>
+                    <select id="nome" required class="form-control">
+                        <option value="" disabled selected>Selecione Seu Nome</option>
+                        <option value="ADAUTON CAMPOS">ADAUTON CAMPOS</option>
+                        <option value="ADEMIR MORAES DE LIMA">ADEMIR MORAES DE LIMA</option>
+                        <option value="ADEMIR PEREIRA DA SILVA">ADEMIR PEREIRA DA SILVA</option>
+                        <option value="ADRIANO CHAVES DE SOUZA">ADRIANO CHAVES DE SOUZA</option>
+                        <option value="ALEFF BAPTISTA ELLER">ALEFF BAPTISTA ELLER</option>
+                        <option value="ALEXANDRE CHAVES">ALEXANDRE CHAVES</option>
+                        <option value="ALEXANDRE FERNANDES DE OLIVEIRA">ALEXANDRE FERNANDES DE OLIVEIRA</option>
+                        <option value="ALEXSANDRO FARIA PEREIRA CARLETE">ALEXSANDRO FARIA PEREIRA CARLETE</option>
+                        <option value="ALEXANDRO DA SILVA LIMA">ALEXANDRO DA SILVA LIMA</option>
+                        <option value="ALEXSANDRO SILVA SANTOS">ALEXSANDRO SILVA SANTOS</option>
+                        <option value="ALLAN FERNANDES DA SILVA">ALLAN FERNANDES DA SILVA</option>
+                        <option value="ANA PAULA DA SILVA">ANA PAULA DA SILVA</option>
+                        <option value="ANDRE LUIS FERREIRA">ANDRE LUIS FERREIRA</option>
+                        <option value="ANDRE LUIZ RODRIGUES">ANDRE LUIZ RODRIGUES</option>
+                        <option value="ANDRE MARCELO REIS ALENCAR">ANDRE MARCELO REIS ALENCAR</option>
+                        <option value="ANDREANS ANDRE DOS SANTOS">ANDREANS ANDRE DOS SANTOS</option>
+                        <option value="ANDREY CARDOSO DA SILVA">ANDREY CARDOSO DA SILVA</option>
+                        <option value="ANISIO BUSCARINI">ANISIO BUSCARINI</option>
+                        <option value="ANTONIO AFONSO DE QUEIROZ FILHO">ANTONIO AFONSO DE QUEIROZ FILHO</option>
+                        <option value="ANTONIO CEZAR DA CUNHA JUNIOR">ANTONIO CEZAR DA CUNHA JUNIOR</option>
+                        <option value="BENEDITO DONIZETI DE OLIVEIRA">BENEDITO DONIZETI DE OLIVEIRA</option>
+                        <option value="BRENO HENRIQUE PASIN FAUSTINO">BRENO HENRIQUE PASIN FAUSTINO</option>
+                        <option value="BRUNO FERNANDES DA SILVA">BRUNO FERNANDES DA SILVA</option>
+                        <option value="BRUNO HENRIQUE DA CRUZ LISBOA">BRUNO HENRIQUE DA CRUZ LISBOA</option>
+                        <option value="BRUNO JOSE RAMALHO">BRUNO JOSE RAMALHO</option>
+                        <option value="CAMILO DE OLIVEIRA DOS SANTOS">CAMILO DE OLIVEIRA DOS SANTOS</option>
+                        <option value="CARLOS LUIZ DE FARIA">CARLOS LUIZ DE FARIA</option>
+                        <option value="CAUE LUIZ">CAUE LUIZ</option>
+                        <option value="CLAUDINEI ALVES DE OLIVEIRA">CLAUDINEI ALVES DE OLIVEIRA</option>
+                        <option value="CLAYTON LOURENCO DOS SANTOS">CLAYTON LOURENCO DOS SANTOS</option>
+                        <option value="CLEYTON OLIVEIRA DA SILVA">CLEYTON OLIVEIRA DA SILVA</option>
+                        <option value="CLOVIS SEBASTIAO BRUNO">CLOVIS SEBASTIAO BRUNO</option>
+                        <option value="DAIANA APARECIDA SANTOS SILVA">DAIANA APARECIDA SANTOS SILVA</option>
+                        <option value="DANIEL SANTOS DE CARVALHO">DANIEL SANTOS DE CARVALHO</option>
+                        <option value="DANILO DE MATOS LOPES">DANILO DE MATOS LOPES</option>
+                        <option value="DAVID ALMEIDA PASCOAL">DAVID ALMEIDA PASCOAL</option>
+                        <option value="DEIVID ALLAN CASTRO DE MATOS">DEIVID ALLAN CASTRO DE MATOS</option>
+                        <option value="DIOGO COSTA DE ANDRADE">DIOGO COSTA DE ANDRADE</option>
+                        <option value="DIOGO LUIZ SILVA WEBER">DIOGO LUIZ SILVA WEBER</option>
+                        <option value="DOUGLAS ALEXANDRE MARTINS">DOUGLAS ALEXANDRE MARTINS</option>
+                        <option value="DOUGLAS HIDEO TANAKA PEREIRA">DOUGLAS HIDEO TANAKA PEREIRA</option>
+                        <option value="EDERSON APARECIDO AZEVEDO ANTUNES">EDERSON APARECIDO AZEVEDO ANTUNES</option>
+                        <option value="EDMILSON DOS SANTOS">EDMILSON DOS SANTOS</option>
+                        <option value="ELIAS ALVES SOARES">ELIAS ALVES SOARES</option>
+                        <option value="ELIEL MIRANDA SILVA">ELIEL MIRANDA SILVA</option>
+                        <option value="ELIZABETH RODRIGUES CLARO">ELIZABETH RODRIGUES CLARO</option>
+                        <option value="EMERSON TEODORO">EMERSON TEODORO</option>
+                        <option value="ERICA SIMONE JOSE DOS SANTOS">ERICA SIMONE JOSE DOS SANTOS</option>
+                        <option value="ERICK OLIVEIRA ALVES">ERICK OLIVEIRA ALVES</option>
+                        <option value="ERIK ALVES SAMUEL">ERIK ALVES SAMUEL</option>
+                        <option value="FABIO NASCIMENTO VANUCCI">FABIO NASCIMENTO VANUCCI</option>
+                        <option value="FLAVIO RODRIGUES">FLAVIO RODRIGUES</option>
+                        <option value="FELIPE ANTONIO DUTRA EVANGELISTA">FELIPE ANTONIO DUTRA EVANGELISTA</option>
+                        <option value="FELIPE EDUARDO ROCHALO DE MATOS">FELIPE EDUARDO ROCHALO DE MATOS</option>
+                        <option value="FELIPE RAFAEL PRADO MATIAS">FELIPE RAFAEL PRADO MATIAS</option>
+                        <option value="FERNANDO ALISSON ALMEIDA CAMARGO">FERNANDO ALISSON ALMEIDA CAMARGO</option>
+                        <option value="FERNANDO ALVES SANTOS">FERNANDO ALVES SANTOS</option>
+                        <option value="FLAVIO RODRIGUES (PCD)">FLAVIO RODRIGUES (PCD)</option>
+                        <option value="FRANCISCO EROLES JUNIOR">FRANCISCO EROLES JUNIOR</option>
+                        <option value="GABRIEL ANDREW DA SILVA">GABRIEL ANDREW DA SILVA</option>
+                        <option value="GABRIEL APARECIDO MORAES DE SOUZA - ADM">GABRIEL APARECIDO MORAES DE SOUZA - ADM</option>
+                        <option value="GABRIEL SANDRI DOMINGUES">GABRIEL SANDRI DOMINGUES</option>
+                        <option value="GIOVANNI JOSE DOS SANTOS PRADO">GIOVANNI JOSE DOS SANTOS PRADO</option>
+                        <option value="GUILHERME DE OLIVEIRA FERREIRA">GUILHERME DE OLIVEIRA FERREIRA</option>
+                        <option value="GUILHERME MATHEUS DA SILVA">GUILHERME MATHEUS DA SILVA</option>
+                        <option value="GUSTAVO LIMA DOS SANTOS">GUSTAVO LIMA DOS SANTOS</option>
+                        <option value="HENRIQUE GOMES FERREIRA">HENRIQUE GOMES FERREIRA</option>
+                        <option value="HENRIQUE RAFAEL DE OLIVEIRA BRAGA">HENRIQUE RAFAEL DE OLIVEIRA BRAGA</option>
+                        <option value="HENRIQUE RODRIGUES JIMPON HU">HENRIQUE RODRIGUES JIMPON HU</option>
+                        <option value="HENRRI NICOLAS DE JESUS ROSA">HENRRI NICOLAS DE JESUS ROSA</option>
+                        <option value="HIAGO LINCON CUBAS SIQUEIRA SILVA">HIAGO LINCON CUBAS SIQUEIRA SILVA</option>
+                        <option value="HIGOR APARECIDO DA SILVA">HIGOR APARECIDO DA SILVA</option>
+                        <option value="ISAIAS MARIANO DE SOUZA">ISAIAS MARIANO DE SOUZA</option>
+                        <option value="JANDERSON CAMARGO">JANDERSON CAMARGO</option>
+                        <option value="JEFERSON DE SOUZA SOARES">JEFERSON DE SOUZA SOARES</option>
+                        <option value="JESSE DE SOUZA MELLO">JESSE DE SOUZA MELLO</option>
+                        <option value="JIULY GUSTAVO MAIA MILITAO">JIULY GUSTAVO MAIA MILITAO</option>
+                        <option value="JOAO JOEL MENDES">JOAO JOEL MENDES</option>
+                        <option value="JOAO PEDRO CARVALHO DOS SANTOS">JOAO PEDRO CARVALHO DOS SANTOS</option>
+                        <option value="JOAO PEDRO SILVEIRA">JOAO PEDRO SILVEIRA</option>
+                        <option value="JOAO VICTOR RODRIGUES SILVA">JOAO VICTOR RODRIGUES SILVA</option>
+                        <option value="JOAO VITOR ALMEIDA DOS SANTOS">JOAO VITOR ALMEIDA DOS SANTOS</option>
+                        <option value="JONATHAN HENRIQUE SIQUEIRA DO NASCIMENTO">JONATHAN HENRIQUE SIQUEIRA DO NASCIMENTO</option>
+                        <option value="JONATHAN SULIVAN DAS NEVES">JONATHAN SULIVAN DAS NEVES</option>
+                        <option value="JOSE APOLINARIO">JOSE APOLINARIO</option>
+                        <option value="JOSE CARLOS ALVES LINS (PCD)">JOSE CARLOS ALVES LINS (PCD)</option>
+                        <option value="JOSE CARLOS DE SOUZA">JOSE CARLOS DE SOUZA</option>
+                        <option value="JOSE JONATAS DOS SANTOS COSTA">JOSE JONATAS DOS SANTOS COSTA</option>
+                        <option value="JULIO CEZAR DOS SANTOS">JULIO CEZAR DOS SANTOS</option>
+                        <option value="JULIO DA SILVA PINTO">JULIO DA SILVA PINTO</option>
+                        <option value="KAUAN DE SOUZA FARIAS">KAUAN DE SOUZA FARIAS</option>
+                        <option value="KAUE SILVA DE PAULA">KAUE SILVA DE PAULA</option>
+                        <option value="KENEDY DE OLIVEIRA">KENEDY DE OLIVEIRA</option>
+                        <option value="KLEBERSON PEREIRA DOS SANTOS">KLEBERSON PEREIRA DOS SANTOS</option>
+                        <option value="LEANDRO FERREIRA DA SILVA">LEANDRO FERREIRA DA SILVA</option>
+                        <option value="LEANDRO FERREIRA DE OLIVEIRA">LEANDRO FERREIRA DE OLIVEIRA</option>
+                        <option value="LEONARDO DA SILVA COSTA">LEONARDO DA SILVA COSTA</option>
+                        <option value="LEONARDO GODOY DOS SANTOS">LEONARDO GODOY DOS SANTOS</option>
+                        <option value="LEONARDO VASCONCELOS DO PRADO">LEONARDO VASCONCELOS DO PRADO</option>
+                        <option value="LUCAS DA SILVA PASSOS">LUCAS DA SILVA PASSOS</option>
+                        <option value="LUCAS DE OLIVEIRA ANDRADE">LUCAS DE OLIVEIRA ANDRADE</option>
+                        <option value="LUCAS GABRIEL DA SILVA">LUCAS GABRIEL DA SILVA</option>
+                        <option value="LUCAS MONTEIRO VASCONCELOS">LUCAS MONTEIRO VASCONCELOS</option>
+                        <option value="LUIS FABIANO APARECIDO ORTIZ DAS NEVES">LUIS FABIANO APARECIDO ORTIZ DAS NEVES</option>
+                        <option value="LUIS FELIPE DONIZETI DE SANTANA FERNANDES">LUIS FELIPE DONIZETI DE SANTANA FERNANDES</option>
+                        <option value="LUIS FERNANDO DE SOUZA MACHADO">LUIS FERNANDO DE SOUZA MACHADO</option>
+                        <option value="LUIS HENRIQUE DA SILVA">LUIS HENRIQUE DA SILVA</option>
+                        <option value="LUIZ GUSTAVO ALMEIDA DOS SANTOS">LUIZ GUSTAVO ALMEIDA DOS SANTOS</option>
+                        <option value="LUIZ HENRIQUE FERNANDES">LUIZ HENRIQUE FERNANDES</option>
+                        <option value="LUIZ ROBERTO CARRASCO FRANCO">LUIZ ROBERTO CARRASCO FRANCO</option>
+                        <option value="MARCELO DA SILVA RODRIGUES">MARCELO DA SILVA RODRIGUES</option>
+                        <option value="MARCELO DONIZETTI DOS SANTOS DIAS">MARCELO DONIZETTI DOS SANTOS DIAS</option>
+                        <option value="MARCELO GORRERA BRITTO FERNANDES">MARCELO GORRERA BRITTO FERNANDES</option>
+                        <option value="MARCIO APARECIDO DE OLIVEIRA">MARCIO APARECIDO DE OLIVEIRA</option>
+                        <option value="MARCIO APARECIDO DE OLIVEIRA JUNIOR">MARCIO APARECIDO DE OLIVEIRA JUNIOR</option>
+                        <option value="MARCO APARECIDO DAS NEVES">MARCO APARECIDO DAS NEVES</option>
+                        <option value="MARIA BENEDITA BORGES">MARIA BENEDITA BORGES</option>
+                        <option value="MARINES DE MORAES PIRES">MARINES DE MORAES PIRES</option>
+                        <option value="MATEUS FRANCO LEAO SENA">MATEUS FRANCO LEAO SENA</option>
+                        <option value="MATHEUS GUSTAVO SANCHES DE MELO">MATHEUS GUSTAVO SANCHES DE MELO</option>
+                        <option value="MATHEUS KEVIN DA SILVA ALMEIDA">MATHEUS KEVIN DA SILVA ALMEIDA</option>
+                        <option value="MATHEUS LOTITO BITTENCOURT">MATHEUS LOTITO BITTENCOURT</option>
+                        <option value="MERCIA DE SOUZA SANDRI RODRIGUES">MERCIA DE SOUZA SANDRI RODRIGUES</option>
+                        <option value="MURILO MAESTRE FERREIRA DOS SANTOS">MURILO MAESTRE FERREIRA DOS SANTOS</option>
+                        <option value="NELSON IUSUTI DOS SANTOS">NELSON IUSUTI DOS SANTOS</option>
+                        <option value="NICOLAS SILVA DOS SANTOS">NICOLAS SILVA DOS SANTOS</option>
+                        <option value="NICOLAS WILTON MONTEIRO">NICOLAS WILTON MONTEIRO</option>
+                        <option value="PAULO GABRIEL">PAULO GABRIEL</option>
+                        <option value="PAULO HENRIQUE DE OLIVEIRA">PAULO HENRIQUE DE OLIVEIRA</option>
+                        <option value="PAULO ROGERIO CALIXTO">PAULO ROGERIO CALIXTO</option>
+                        <option value="PEDRO DOS SANTOS">PEDRO DOS SANTOS</option>
+                        <option value="PEDRO HENRIQUE DA SILVA JUNGERS FRANCO">PEDRO HENRIQUE DA SILVA JUNGERS FRANCO</option>
+                        <option value="PETERSON SIMEAO TEIXEIRA">PETERSON SIMEAO TEIXEIRA</option>
+                        <option value="RAELY CAROLINE DE LIMA PASSOS">RAELY CAROLINE DE LIMA PASSOS</option>
+                        <option value="RAFAEL DE GODOY SANTOS">RAFAEL DE GODOY SANTOS</option>
+                        <option value="RAFAEL MARQUES DE PAULA">RAFAEL MARQUES DE PAULA</option>
+                        <option value="RAFAEL RODRIGUES GOMES">RAFAEL RODRIGUES GOMES</option>
+                        <option value="RAPHAEL PEREIRA DOS SANTOS">RAPHAEL PEREIRA DOS SANTOS</option>
+                        <option value="REGINALDO BARBOSA DOS SANTOS">REGINALDO BARBOSA DOS SANTOS</option>
+                        <option value="REGINALDO FIRMINO DOS SANTOS JUNIOR">REGINALDO FIRMINO DOS SANTOS JUNIOR</option>
+                        <option value="RENAN OLIVEIRA VIANA">RENAN OLIVEIRA VIANA</option>
+                        <option value="ROBERT APARECIDO DE OLIVEIRA">ROBERT APARECIDO DE OLIVEIRA</option>
+                        <option value="ROBERT SOUZA SILVA">ROBERT SOUZA SILVA</option>
+                        <option value="RODMILSON FELIPE SOUZA LIMA">RODMILSON FELIPE SOUZA LIMA</option>
+                        <option value="RODRIGO APARECIDO TEIXEIRA">RODRIGO APARECIDO TEIXEIRA</option>
+                        <option value="RODRIGO DA SILVA BASTIANELLI">RODRIGO DA SILVA BASTIANELLI</option>
+                        <option value="ROMILSON FLORIANO">ROMILSON FLORIANO</option>
+                        <option value="RUBENS TAVARES RODRIGUES JUNIOR">RUBENS TAVARES RODRIGUES JUNIOR</option>
+                        <option value="SAMUEL SALES GONCALVES DOS ANJOS">SAMUEL SALES GONCALVES DOS ANJOS</option>
+                        <option value="SAMUEL WASHINGTON GOMES DOS SANTOS">SAMUEL WASHINGTON GOMES DOS SANTOS</option>
+                        <option value="SANDRA PEREIRA DE SIQUEIRA DIAS">SANDRA PEREIRA DE SIQUEIRA DIAS</option>
+                        <option value="SANDRO MARTINS PINTO">SANDRO MARTINS PINTO</option>
+                        <option value="SEBASTIAO ELIAS FEITOZA">SEBASTIAO ELIAS FEITOZA</option>
+                        <option value="SILVIO DOS SANTOS">SILVIO DOS SANTOS</option>
+                        <option value="SIMONE APARECIDA DOS SANTOS">SIMONE APARECIDA DOS SANTOS</option>
+                        <option value="SONIA REGINA OLIVEIRA MARQUES">SONIA REGINA OLIVEIRA MARQUES</option>
+                        <option value="TANIA DA SILVA GENIVAL">TANIA DA SILVA GENIVAL</option>
+                        <option value="TEODORO FERNANDES">TEODORO FERNANDES</option>
+                        <option value="TIAGO DA SILVA MARQUES">TIAGO DA SILVA MARQUES</option>
+                        <option value="VAGNER ROBERTO DA SILVA">VAGNER ROBERTO DA SILVA</option>
+                        <option value="VALDIR LEMOS DE OLIVEIRA JUNIOR">VALDIR LEMOS DE OLIVEIRA JUNIOR</option>
+                        <option value="VALDIR ROBERTO DE OLIVEIRA">VALDIR ROBERTO DE OLIVEIRA</option>
+                        <option value="VALERIA FERNANDES CARVALHO">VALERIA FERNANDES CARVALHO</option>
+                        <option value="VALTAIR APARECIDO LEITE ALVES">VALTAIR APARECIDO LEITE ALVES</option>
+                        <option value="VICTOR HENRIQUE DE SANTANA FERNANDES">VICTOR HENRIQUE DE SANTANA FERNANDES</option>
+                        <option value="VINICIUS RAFAEL NUNES BARBOSA">VINICIUS RAFAEL NUNES BARBOSA</option>
+                        <option value="VITOR HENRIQUE DIONISIO PEREIRA">VITOR HENRIQUE DIONISIO PEREIRA</option>
+                        <option value="WAGNER LIMA DE SOUZA">WAGNER LIMA DE SOUZA</option>
+                        <option value="WEMERSON ALENCAR MENDONCA">WEMERSON ALENCAR MENDONCA</option>
+                        <option value="WERISSON SILVA DE ARAUJO">WERISSON SILVA DE ARAUJO</option>
+                        <option value="WESLEI JUNIOR DOS SANTOS DE CAMPOS">WESLEI JUNIOR DOS SANTOS DE CAMPOS</option>
+                        <option value="WESLLEY DIAS DA COSTA">WESLLEY DIAS DA COSTA</option>
+                        <option value="WILLIAN HENRIQUE DINIZ">WILLIAN HENRIQUE DINIZ</option>
+                        <option value="WILLIAN JUNIOR CORDEIRO DE CRISTO">WILLIAN JUNIOR CORDEIRO DE CRISTO</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cpf">CPF</label>
+                    <input type="text" id="cpf" required>
+                </div>
+            </div>
+
+            <h3>Documentos Pessoais</h3>
+            <div class="documento-item">
+                <label for="rg">RG</label>
+                <input type="file" id="rg" accept=".pdf,.jpg,.png" required>
+            </div>
+            <div class="documento-item">
+                <label for="cpfDoc">CPF (Documento)</label>
+                <input type="file" id="cpfDoc" accept=".pdf,.jpg,.png" required>
+            </div>
+            <div class="documento-item">
+                <label for="tituloEleitor">Título de Eleitor</label>
+                <input type="file" id="tituloEleitor" accept=".pdf,.jpg,.png" required>
+            </div>
+            <div class="documento-item">
+                <label for="reservista">Certidão de Reservista</label>
+                <input type="file" id="reservista" accept=".pdf,.jpg,.png" required>
+            </div>
+
+            <h3>Documentos Familiares</h3>
+            <div class="documento-item">
+                <label for="certidaoNascimento">Certidão de Nascimento/Casamento</label>
+                <input type="file" id="certidaoNascimento" accept=".pdf,.jpg,.png" required>
+            </div>
+            <div class="documento-item">
+                <label for="certidaoFilhos">Certidão de Nascimento dos Filhos</label>
+                <input type="file" id="certidaoFilhos" accept=".pdf,.jpg,.png">
+            </div>
+            <div class="documento-item">
+                <label for="cpfDependentes">CPF dos Dependentes</label>
+                <input type="file" id="cpfDependentes" accept=".pdf,.jpg,.png">
+            </div>
+            <div class="documento-item">
+                <label for="vacinaFilhos">Carteira de Vacinação dos Filhos</label>
+                <input type="file" id="vacinaFilhos" accept=".pdf,.jpg,.png">
+            </div>
+
+            <h3>Documentos Residenciais</h3>
+            <div class="documento-item">
+                <label for="comprovanteResidencia">Comprovante de Residência</label>
+                <input type="file" id="comprovanteResidencia" accept=".pdf,.jpg,.png" required>
+            </div>
+
+            <h3>Outros Documentos</h3>
+            <div class="documento-item">
+                <label for="foto3x4">Foto 3x4</label>
+                <input type="file" id="foto3x4" accept=".jpg,.png" required>
+            </div>
+            <div class="documento-item">
+                <label for="cnh">CNH (se aplicável)</label>
+                <input type="file" id="cnh" accept=".pdf,.jpg,.png">
+            </div>
+            <div class="documento-item">
+                <label for="certificadoCurso">Certificado de Curso Específico</label>
+                <input type="file" id="certificadoCurso" accept=".pdf,.jpg,.png">
+            </div>
+            <div class="documento-item">
+                <label for="pis">Cartão do PIS</label>
+                <input type="file" id="pis" accept=".pdf,.jpg,.png" required>
+            </div>
+            <div class="documento-item">
+                <label for="historicoEscolar">Histórico Escolar</label>
+                <input type="file" id="historicoEscolar" accept=".pdf,.jpg,.png">
+            </div>
+            <div class="documento-item">
+                <label for="vacinaCovid">Comprovante de Vacina - COVID-19</label>
+                <input type="file" id="vacinaCovid" accept=".pdf,.jpg,.png" required>
+            </div>
+
+            <button id="salvarBtn" class="btn">Salvar Documentos</button>
+        </div>
+
+        <!-- Página de Funcionários -->
+        <div id="funcionarios" class="container">
+            <h2>Funcionários Cadastrados</h2>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="filtroFuncionarios">Filtrar por Nome</label>
+                <input type="text" id="filtroFuncionarios" placeholder="Digite o nome para filtrar...">
+            </div>
+            <div class="funcionarios-list" id="funcionariosList">
+                <!-- Lista será preenchida dinamicamente -->
+            </div>
+        </div>
+
+        <!-- Página de Documentos do Funcionário -->
+        <div id="documentosFuncionario" class="container">
+            <button id="voltarBtn" class="btn">Voltar</button>
+            <h2 id="nomeFuncionario">Documentos de </h2>
+            <div class="documentos-container" id="documentosContainer">
+                <!-- Documentos serão listados aqui -->
+            </div>
+        </div>
+
+        <!-- Página de Controle de Pessoas -->
+        <div id="controlePessoas" class="container">
+            <h2>Controle de Pessoas</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="novaPessoaNome">Nomes (separados por vírgula)</label>
+                    <input type="text" id="novaPessoaNome" required placeholder="Ex: João Silva, Maria Oliveira, Pedro Santos">
+                </div>
+                <div class="form-group">
+                    <label for="novaPessoaCPF">CPFs (opcional, separados por vírgula)</label>
+                    <input type="text" id="novaPessoaCPF" placeholder="Somente números, ex: 12345678901,98765432100">
+                </div>
+                <button id="adicionarPessoaBtn" class="btn">Adicionar Pessoas</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="filtroPessoas">Filtrar por Nome</label>
+                <input type="text" id="filtroPessoas" placeholder="Digite para filtrar...">
+            </div>
+            
+            <h3>Pessoas Cadastradas</h3>
+            <div id="listaPessoas" style="margin-top: 20px;"></div>
+            
+            <div class="resumo-pessoas">
+                <h4>Resumo</h4>
+                <p>Total de Pessoas: <span id="totalPessoas">0</span></p
+                    <p>Documentos Enviados: <span id="totalEnviados">0</span></p>
+                    <p>Documentos Pendentes: <span id="totalPendentes">0</span></p>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Modal de Senha para Funcionários -->
+        <div id="senhaModal" class="modal">
+            <div class="modal-content">
+                <h3 class="modal-title">Acesso Restrito</h3>
+                <p>Digite a senha para acessar a área de funcionários:</p>
+                <input type="password" id="senhaAcesso" class="form-group" style="width: 100%;">
+                <div class="modal-actions">
+                    <button id="cancelarSenhaBtn" class="btn">Cancelar</button>
+                    <button id="confirmarSenhaBtn" class="btn">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Firebase e Scripts -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    
+        <script>
+            // Configuração do Firebase
+            const firebaseConfig = {
+                apiKey: "AIzaSyBZE7myNAPADs8yJx8ejr1qnaqV60U-LvU",
+                authDomain: "ritmo-44c20.firebaseapp.com",
+                databaseURL: "https://ritmo-44c20-default-rtdb.firebaseio.com",
+                projectId: "ritmo-44c20",
+                storageBucket: "ritmo-44c20.appspot.com",
+                messagingSenderId: "784049161032",
+                appId: "1:784049161032:web:480bf33cb60e020ca3e97d",
+                measurementId: "G-DPYNXD0BNC"
+            };
+            
+            // Inicializa o Firebase
+            firebase.initializeApp(firebaseConfig);
+            const auth = firebase.auth();
+            const database = firebase.database();
+            const storage = firebase.storage();
+            const funcionariosRef = database.ref('funcionarios');
+            const pessoasRef = database.ref('pessoasControle');
+            
+            // Lista de documentos obrigatórios
+            const DOCUMENTOS_OBRIGATORIOS = [
+                'rg', 'cpfDoc', 'tituloEleitor', 'reservista', 
+                'certidaoNascimento', 'comprovanteResidencia', 
+                'foto3x4', 'pis', 'vacinaCovid'
+            ];
+            
+            // Estado da aplicação
+            let currentFuncionarioId = null;
+            let todosFuncionarios = [];
+            const SENHA_ADMIN = "PWESD233@#&"; // Senha para acessar áreas restritas
+            
+            // Função para mostrar página específica
+            function showPage(pageId) {
+                document.querySelectorAll('.container').forEach(page => {
+                    page.classList.remove('active');
+                });
+                document.getElementById(pageId).classList.add('active');
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector(`.nav-btn[data-page="${pageId}"]`).classList.add('active');
+                
+                // Rolar para o topo ao mudar de página
+                window.scrollTo(0, 0);
+            }
+            
+            // Navegação
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.dataset.page === 'funcionarios' || btn.dataset.page === 'controlePessoas') {
+                        document.getElementById('senhaModal').style.display = 'flex';
+                        document.getElementById('senhaAcesso').value = '';
+                        document.getElementById('senhaAcesso').focus();
+                        
+                        // Configurar temporariamente o botão de confirmação
+                        const confirmarBtn = document.getElementById('confirmarSenhaBtn');
+                        const originalHandler = confirmarBtn.onclick;
+                        
+                        confirmarBtn.onclick = function() {
+                            const senha = document.getElementById('senhaAcesso').value;
+                            if (senha === SENHA_ADMIN) {
+                                document.getElementById('senhaModal').style.display = 'none';
+                                showPage(btn.dataset.page);
+                                document.getElementById('senhaAcesso').value = '';
+                                // Restaurar o handler original
+                                confirmarBtn.onclick = originalHandler;
+                            } else {
+                                alert('Senha incorreta!');
+                            }
+                        };
+                    } else {
+                        showPage(btn.dataset.page);
+                    }
+                });
+            });
+            
+            // Modal de Senha
+            document.getElementById('cancelarSenhaBtn').addEventListener('click', () => {
+                document.getElementById('senhaModal').style.display = 'none';
+                document.getElementById('senhaAcesso').value = '';
+            });
+            
+            // Login
+            document.getElementById('loginForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const senha = document.getElementById('senha').value;
+                
+                const btnLogin = document.querySelector('#loginForm .btn');
+                const originalText = btnLogin.textContent;
+                btnLogin.innerHTML = '<span class="loader"></span> Entrando...';
+                btnLogin.disabled = true;
+                
+                auth.signInWithEmailAndPassword(email, senha)
+                    .then(() => {
+                        btnLogin.textContent = originalText;
+                        btnLogin.disabled = false;
+                        document.getElementById('loginContainer').style.display = 'none';
+                        document.getElementById('appContainer').style.display = 'block';
+                        showPage('cadastro');
+                        carregarFuncionarios();
+                        carregarListaPessoas();
+                    })
+                    .catch(error => {
+                        btnLogin.textContent = originalText;
+                        btnLogin.disabled = false;
+                        alert('Erro ao fazer login: ' + error.message);
+                    });
+            });
+            
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja sair?')) {
+                    auth.signOut()
+                        .then(() => {
+                            document.getElementById('loginContainer').style.display = 'flex';
+                            document.getElementById('appContainer').style.display = 'none';
+                        });
+                }
+            });
+            
+            // Voltar para lista de funcionários
+            document.getElementById('voltarBtn').addEventListener('click', () => {
+                showPage('funcionarios');
+            });
+            
+            // Salvar documentos
+            document.getElementById('salvarBtn').addEventListener('click', async () => {
+                const nome = document.getElementById('nome').value.trim();
+                const cpf = document.getElementById('cpf').value.trim().replace(/\D/g, '');
+                
+                if (!nome || !cpf) {
+                    showAlert('Por favor, preencha o nome e CPF do funcionário', 'error');
+                    return;
+                }
+                
+                if (cpf.length !== 11) {
+                    showAlert('CPF inválido. Deve conter 11 dígitos.', 'error');
+                    return;
+                }
+                
+                const btnSalvar = document.getElementById('salvarBtn');
+                const originalText = btnSalvar.textContent;
+                btnSalvar.innerHTML = '<span class="loader"></span> Salvando...';
+                btnSalvar.disabled = true;
+                
+                const funcionarioData = {
+                    nome: nome.toUpperCase(),
+                    cpf,
+                    dataCadastro: new Date().toISOString(),
+                    documentos: {}
+                };
+                
+                try {
+                    // Processa cada documento
+                    for (const docId of DOCUMENTOS_OBRIGATORIOS) {
+                        const fileInput = document.getElementById(docId);
+                        if (fileInput && fileInput.files.length > 0) {
+                            const file = fileInput.files[0];
+                            const base64 = await fileParaBase64(file);
+                            
+                            funcionarioData.documentos[docId] = {
+                                nome: file.name,
+                                tipo: file.type,
+                                tamanho: file.size,
+                                data: base64,
+                                dataUpload: new Date().toISOString()
+                            };
+                        } else {
+                            showAlert(`O documento ${getDocumentName(docId)} é obrigatório`, 'error');
+                            btnSalvar.textContent = originalText;
+                            btnSalvar.disabled = false;
+                            return;
+                        }
+                    }
+                    
+                    // Processa documentos adicionais
+                    const DOCUMENTOS_ADICIONAIS = [
+                        'certidaoFilhos', 'cpfDependentes', 'vacinaFilhos',
+                        'cnh', 'certificadoCurso', 'historicoEscolar'
+                    ];
+                    
+                    for (const docId of DOCUMENTOS_ADICIONAIS) {
+                        const fileInput = document.getElementById(docId);
+                        if (fileInput && fileInput.files.length > 0) {
+                            const file = fileInput.files[0];
+                            const base64 = await fileParaBase64(file);
+                            
+                            funcionarioData.documentos[docId] = {
+                                nome: file.name,
+                                tipo: file.type,
+                                tamanho: file.size,
+                                data: base64,
+                                dataUpload: new Date().toISOString()
+                            };
+                        }
+                    }
+                    
+                    // Verifica se já existe funcionário com mesmo CPF
+                    const snapshot = await funcionariosRef.orderByChild('cpf').equalTo(cpf).once('value');
+                    if (snapshot.exists()) {
+                        showAlert('Já existe um funcionário cadastrado com este CPF', 'error');
+                        btnSalvar.textContent = originalText;
+                        btnSalvar.disabled = false;
+                        return;
+                    }
+                    
+                    // Salva no Firebase
+                    await funcionariosRef.push().set(funcionarioData);
+                    
+                    showAlert('Documentos salvos com sucesso!', 'success');
+                    
+                    // Limpa o formulário
+                    document.getElementById('nome').value = '';
+                    document.getElementById('cpf').value = '';
+                    
+                    const todosDocumentos = [...DOCUMENTOS_OBRIGATORIOS, ...DOCUMENTOS_ADICIONAIS];
+                    todosDocumentos.forEach(docId => {
+                        const input = document.getElementById(docId);
+                        if (input) input.value = '';
+                    });
+                    
+                    // Atualiza a lista
+                    carregarFuncionarios();
+                    
+                } catch (error) {
+                    console.error('Erro ao salvar documentos:', error);
+                    showAlert('Erro ao salvar documentos: ' + error.message, 'error');
+                } finally {
+                    btnSalvar.textContent = originalText;
+                    btnSalvar.disabled = false;
+                }
+            });
+            
+            // Carrega lista de funcionários
+            // Substitua a função carregarFuncionarios e o evento de filtro por este código:
+
+
+// Carrega lista de funcionários
+function carregarFuncionarios() {
+    const funcionariosList = document.getElementById('funcionariosList');
+    funcionariosList.innerHTML = '<p class="loading-text">Carregando funcionários...</p>';
+    
+    funcionariosRef.on('value', snapshot => {
+        todosFuncionarios = []; // Limpa o array antes de recarregar
+        
+        if (!snapshot.exists()) {
+            funcionariosList.innerHTML = '<p class="no-data">Nenhum funcionário cadastrado</p>';
+            return;
+        }
+        
+        funcionariosList.innerHTML = ''; // Limpa a lista
+        
+        snapshot.forEach(childSnapshot => {
+            const funcionario = childSnapshot.val();
+            const funcionarioId = childSnapshot.key;
+            
+            // Adiciona ao array global
+            todosFuncionarios.push({
+                ...funcionario,
+                id: funcionarioId
+            });
+            
+            // Cria e exibe o card do funcionário
+            criarCardFuncionario(funcionario, funcionarioId, funcionariosList);
+        });
+    });
+}
+
+// Função para criar um card de funcionário
+function criarCardFuncionario(funcionario, funcionarioId, container) {
+    // Calcula documentos entregues
+    const docsEntregues = funcionario.documentos ? 
+        Object.keys(funcionario.documentos).length : 0;
+    const percentual = Math.round(
+        (docsEntregues / DOCUMENTOS_OBRIGATORIOS.length) * 100
+    );
+    
+    // Cria o card do funcionário
+    const card = document.createElement('div');
+    card.className = 'funcionario-card';
+    card.innerHTML = `
+        <h3>${funcionario.nome}</h3>
+        <p>CPF: ${formatarCPF(funcionario.cpf)}</p>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress" style="width: ${percentual}%"></div>
+            </div>
+            <p class="progress-text">${percentual}% completo</p>
+        </div>
+    `;
+    
+    // Botão para ver documentos
+    const verBtn = document.createElement('button');
+    verBtn.className = 'download-btn';
+    verBtn.textContent = 'Ver Documentos';
+    verBtn.addEventListener('click', () => {
+        currentFuncionarioId = funcionarioId;
+        document.getElementById('nomeFuncionario').textContent = `Documentos de ${funcionario.nome}`;
+        mostrarDocumentosFuncionario(funcionario);
+        showPage('documentosFuncionario');
+    });
+    
+    card.appendChild(verBtn);
+    container.appendChild(card);
+}
+
+// Configurar filtro de funcionários - DEVE SER CHAMADO APÓS carregarFuncionarios()
+function configurarFiltroFuncionarios() {
+    document.getElementById('filtroFuncionarios').addEventListener('input', function(e) {
+        const filtro = e.target.value.toLowerCase().trim();
+        const funcionariosList = document.getElementById('funcionariosList');
+        
+        // Se o filtro estiver vazio, mostra todos
+        if (!filtro) {
+            funcionariosList.innerHTML = '';
+            todosFuncionarios.forEach(funcionario => {
+                criarCardFuncionario(funcionario, funcionario.id, funcionariosList);
+            });
+            return;
+        }
+        
+        // Filtra os funcionários
+        const funcionariosFiltrados = todosFuncionarios.filter(funcionario => 
+            funcionario.nome.toLowerCase().includes(filtro) || 
+            (funcionario.cpf && funcionario.cpf.includes(filtro.replace(/\D/g, '')))
+        );
+        
+        funcionariosList.innerHTML = '';
+        
+        if (funcionariosFiltrados.length === 0) {
+            funcionariosList.innerHTML = '<p class="no-data">Nenhum funcionário encontrado</p>';
+            return;
+        }
+        
+        // Mostra apenas os filtrados
+        funcionariosFiltrados.forEach(funcionario => {
+            criarCardFuncionario(funcionario, funcionario.id, funcionariosList);
+        });
+    });
+}
+
+// Modifique a função de login para configurar o filtro após o carregamento
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
+    
+    const btnLogin = document.querySelector('#loginForm .btn');
+    const originalText = btnLogin.textContent;
+    btnLogin.innerHTML = '<span class="loader"></span> Entrando...';
+    btnLogin.disabled = true;
+    
+    auth.signInWithEmailAndPassword(email, senha)
+        .then(() => {
+            btnLogin.textContent = originalText;
+            btnLogin.disabled = false;
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+            showPage('cadastro');
+            
+            // Carrega funcionários e depois configura o filtro
+            carregarFuncionarios();
+            setTimeout(() => configurarFiltroFuncionarios(), 500); // Pequeno delay para garantir
+            
+            carregarListaPessoas();
+        })
+        .catch(error => {
+            btnLogin.textContent = originalText;
+            btnLogin.disabled = false;
+            alert('Erro ao fazer login: ' + error.message);
+        });
+});
+            
+            // Configurar filtro de funcionários
+            document.getElementById('filtroFuncionarios').addEventListener('input', function(e) {
+                const filtro = e.target.value.toLowerCase();
+                const funcionariosList = document.getElementById('funcionariosList');
+                
+                if (!filtro) {
+                    // Se o filtro estiver vazio, mostra todos os funcionários
+                    carregarFuncionarios();
+                    return;
+                }
+                
+                funcionariosList.innerHTML = '';
+                
+                // Filtra os funcionários
+                const funcionariosFiltrados = todosFuncionarios.filter(funcionario => 
+                    funcionario.nome.toLowerCase().includes(filtro) || 
+                    funcionario.cpf.includes(filtro)
+                );
+                
+                if (funcionariosFiltrados.length === 0) {
+                    funcionariosList.innerHTML = '<p class="no-data">Nenhum funcionário encontrado</p>';
+                    return;
+                }
+                
+                // Recria os cards apenas para os funcionários filtrados
+                funcionariosFiltrados.forEach(funcionario => {
+                    // Calcula documentos entregues
+                    const docsEntregues = funcionario.documentos ? 
+                        Object.keys(funcionario.documentos).length : 0;
+                    const percentual = Math.round(
+                        (docsEntregues / DOCUMENTOS_OBRIGATORIOS.length) * 100
+                    );
+                    
+                    // Cria o card do funcionário
+                    const card = document.createElement('div');
+                    card.className = 'funcionario-card';
+                    card.innerHTML = `
+                        <h3>${funcionario.nome}</h3>
+                        <p>CPF: ${formatarCPF(funcionario.cpf)}</p>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress" style="width: ${percentual}%"></div>
+                            </div>
+                            <p class="progress-text">${percentual}% completo</p>
+                        </div>
+                    `;
+                    
+                    // Botão para ver documentos
+                    const verBtn = document.createElement('button');
+                    verBtn.className = 'download-btn';
+                    verBtn.textContent = 'Ver Documentos';
+                    verBtn.addEventListener('click', () => {
+                        currentFuncionarioId = funcionario.id;
+                        document.getElementById('nomeFuncionario').textContent = `Documentos de ${funcionario.nome}`;
+                        mostrarDocumentosFuncionario(funcionario);
+                        showPage('documentosFuncionario');
+                    });
+                    
+                    card.appendChild(verBtn);
+                    funcionariosList.appendChild(card);
+                });
+            });
+            
+            // Mostra documentos de um funcionário específico
+            function mostrarDocumentosFuncionario(funcionario) {
+                const documentosContainer = document.getElementById('documentosContainer');
+                documentosContainer.innerHTML = '';
+                
+                if (!funcionario.documentos) {
+                    documentosContainer.innerHTML = '<p class="no-data">Nenhum documento cadastrado</p>';
+                    return;
+                }
+                
+                // Ordena documentos por categoria
+                const categorias = {
+                    'Documentos Pessoais': ['rg', 'cpfDoc', 'tituloEleitor', 'reservista'],
+                    'Documentos Familiares': ['certidaoNascimento', 'certidaoFilhos', 'cpfDependentes', 'vacinaFilhos'],
+                    'Comprovante Residencial': ['comprovanteResidencia'],
+                    'Documentos Profissionais': ['pis', 'cnh', 'certificadoCurso', 'historicoEscolar'],
+                    'Outros Documentos': ['foto3x4', 'vacinaCovid']
+                };
+                
+                for (const [categoria, docs] of Object.entries(categorias)) {
+                    const docsExistentes = docs.filter(doc => funcionario.documentos[doc]);
+                    
+                    if (docsExistentes.length > 0) {
+                        const categoriaElement = document.createElement('div');
+                        categoriaElement.className = 'document-category';
+                        categoriaElement.innerHTML = `<h3>${categoria}</h3>`;
+                        documentosContainer.appendChild(categoriaElement);
+                        
+                        docsExistentes.forEach(docId => {
+                            const docData = funcionario.documentos[docId];
+                            const docElement = document.createElement('div');
+                            docElement.className = 'documento-view';
+                            docElement.innerHTML = `
+                                <p><strong>${getDocumentName(docId)}</strong></p>
+                                <p>Arquivo: ${docData.nome}</p>
+                                <p>Tamanho: ${formatBytes(docData.tamanho)}</p>
+                                <p>Data: ${new Date(docData.dataUpload).toLocaleDateString('pt-BR')}</p>
+                                <a href="${docData.data}" download="${docData.nome}" class="download-btn">Baixar Documento</a>
+                            `;
+                            documentosContainer.appendChild(docElement);
+                        });
+                    }
+                }
+            }
+            
+            // Controle de Pessoas - Adicionar nova pessoa
+            document.getElementById('adicionarPessoaBtn').addEventListener('click', function() {
+                const nomeInput = document.getElementById('novaPessoaNome');
+                const cpfInput = document.getElementById('novaPessoaCPF');
+                
+                const nomes = nomeInput.value.trim().split(',').map(n => n.trim()).filter(n => n);
+                const cpfs = cpfInput.value.trim().split(',').map(c => c.trim().replace(/\D/g, '')).filter(c => c);
+                
+                if (nomes.length === 0) {
+                    showAlert('Por favor, informe pelo menos um nome', 'error');
+                    return;
+                }
+                
+                // Verificar se o número de CPFs corresponde (se foram fornecidos)
+                if (cpfs.length > 0 && cpfs.length !== nomes.length) {
+                    showAlert('O número de CPFs deve corresponder ao número de nomes ou ser deixado em branco', 'error');
+                    return;
+                }
+                
+                const btnAdicionar = document.getElementById('adicionarPessoaBtn');
+                const originalText = btnAdicionar.textContent;
+                btnAdicionar.innerHTML = '<span class="loader"></span> Adicionando...';
+                btnAdicionar.disabled = true;
+                
+                // Adicionar cada pessoa ao banco de dados
+                const promises = nomes.map((nome, index) => {
+                    const pessoaData = {
+                        nome: nome.toUpperCase(),
+                        dataCadastro: new Date().toISOString()
+                    };
+                    
+                    // Adicionar CPF se existir na posição correspondente
+                    if (cpfs[index] && cpfs[index].length === 11) {
+                        pessoaData.cpf = cpfs[index];
+                    } else if (cpfs[index]) {
+                        showAlert(`CPF ${cpfs[index]} inválido (deve ter 11 dígitos). Será cadastrado sem CPF.`, 'error');
+                    }
+                    
+                    return pessoasRef.push(pessoaData);
+                });
+                
+                Promise.all(promises)
+                    .then(() => {
+                        showAlert(`${nomes.length} pessoa(s) adicionada(s) com sucesso!`, 'success');
+                        nomeInput.value = '';
+                        cpfInput.value = '';
+                        carregarListaPessoas();
+                    })
+                    .catch(error => {
+                        console.error('Erro ao cadastrar pessoa:', error);
+                        showAlert('Erro ao cadastrar pessoa: ' + error.message, 'error');
+                    })
+                    .finally(() => {
+                        btnAdicionar.textContent = originalText;
+                        btnAdicionar.disabled = false;
+                    });
+            });
+            
+            // Configurar filtro de pessoas
+            document.getElementById('filtroPessoas').addEventListener('input', function(e) {
+                const filtro = e.target.value.toLowerCase();
+                carregarListaPessoas(filtro);
+            });
+            
+            // Carregar lista de pessoas com filtro
+            function carregarListaPessoas(filtro = '') {
+                pessoasRef.on('value', function(snapshot) {
+                    const listaPessoas = document.getElementById('listaPessoas');
+                    listaPessoas.innerHTML = '';
+                    
+                    let totalPessoas = 0;
+                    let totalEnviados = 0;
+                    let totalPendentes = 0;
+                    
+                    if (!snapshot.exists()) {
+                        listaPessoas.innerHTML = '<p class="no-data">Nenhuma pessoa cadastrada</p>';
+                        document.getElementById('totalPessoas').textContent = '0';
+                        document.getElementById('totalEnviados').textContent = '0';
+                        document.getElementById('totalPendentes').textContent = '0';
+                        return;
+                    }
+                    
+                    // Processar cada pessoa
+                    snapshot.forEach(function(childSnapshot) {
+                        const pessoa = childSnapshot.val();
+                        const pessoaId = childSnapshot.key;
+                        
+                        // Aplicar filtro se existir
+                        if (filtro && !pessoa.nome.toLowerCase().includes(filtro) && 
+                            !(pessoa.cpf && pessoa.cpf.includes(filtro))) {
+                            return;
+                        }
+                        
+                        totalPessoas++;
+                        
+                        // Criar card da pessoa
+                        const card = document.createElement('div');
+                        card.className = 'pessoa-card';
+                        card.innerHTML = `
+                            <h4>${pessoa.nome}</h4>
+                            ${pessoa.cpf ? `<p>CPF: ${formatarCPF(pessoa.cpf)}</p>` : ''}
+                            <p>Cadastrado em: ${formatarData(pessoa.dataCadastro)}</p>
+                            <div class="pessoa-actions">
+                                <button class="btn-remover" data-id="${pessoaId}">Remover</button>
+                            </div>
+                        `;
+                        
+                        listaPessoas.appendChild(card);
+                        
+                        // Verificar se já enviou documentos (assíncrono)
+                        verificarDocumentosEnviados(pessoa.nome, pessoa.cpf).then(enviou => {
+                            const statusElement = document.createElement('p');
+                            statusElement.innerHTML = `Status: <span class="${enviou ? 'status-enviado' : 'status-pendente'}">${
+                                enviou ? 'Documentos Enviados' : 'Documentos Pendentes'
+                            }</span>`;
+                            
+                            // Inserir após o nome
+                            const nomeElement = card.querySelector('h4');
+                            nomeElement.insertAdjacentElement('afterend', statusElement);
+                            
+                            // Atualizar contadores
+                            if (enviou) totalEnviados++;
+                            else totalPendentes++;
+                            
+                            document.getElementById('totalEnviados').textContent = totalEnviados;
+                            document.getElementById('totalPendentes').textContent = totalPendentes;
+                        });
+                    });
+                    
+                    // Atualizar totais
+                    document.getElementById('totalPessoas').textContent = totalPessoas;
+                    
+                    // Configurar botões de remoção
+                    document.querySelectorAll('.btn-remover').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            if (confirm(`Tem certeza que deseja remover esta pessoa da lista?`)) {
+                                pessoasRef.child(btn.dataset.id).remove()
+                                    .then(() => showAlert('Pessoa removida com sucesso', 'success'))
+                                    .catch(error => showAlert('Erro ao remover pessoa: ' + error.message, 'error'));
+                            }
+                        });
+                    });
+                });
+            }
+            
+            // Verificar se documentos foram enviados
+            async function verificarDocumentosEnviados(nome, cpf) {
+                try {
+                    const snapshot = await funcionariosRef.once('value');
+                    let encontrou = false;
+                    
+                    snapshot.forEach(childSnapshot => {
+                        const funcionario = childSnapshot.val();
+                        
+                        // Verificar por nome (case insensitive) ou CPF
+                        if (funcionario.nome.toLowerCase() === nome.toLowerCase() || 
+                            (cpf && funcionario.cpf === cpf)) {
+                            encontrou = true;
+                        }
+                    });
+                    
+                    return encontrou;
+                } catch (error) {
+                    console.error('Erro ao verificar documentos:', error);
+                    return false;
+                }
+            }
+            
+            // Funções auxiliares
+            function formatarCPF(cpf) {
+                if (!cpf || cpf.length !== 11) return cpf || '';
+                return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+            }
+            
+            function formatarData(dataString) {
+                try {
+                    const data = new Date(dataString);
+                    return data.toLocaleDateString('pt-BR');
+                } catch (e) {
+                    return dataString;
+                }
+            }
+            
+            // Converte arquivo para Base64
+            function fileParaBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                });
+            }
+            
+            // Formata bytes para tamanho legível
+            function formatBytes(bytes, decimals = 2) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const dm = decimals < 0 ? 0 : decimals;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+            }
+            
+            // Retorna nome amigável para o documento
+            function getDocumentName(docId) {
+                const names = {
+                    'rg': 'RG',
+                    'cpfDoc': 'CPF',
+                    'tituloEleitor': 'Título de Eleitor',
+                    'reservista': 'Certidão de Reservista',
+                    'certidaoNascimento': 'Certidão de Nascimento/Casamento',
+                    'certidaoFilhos': 'Certidão de Nascimento dos Filhos',
+                    'cpfDependentes': 'CPF dos Dependentes',
+                    'vacinaFilhos': 'Carteira de Vacinação dos Filhos',
+                    'comprovanteResidencia': 'Comprovante de Residência',
+                    'foto3x4': 'Foto 3x4',
+                    'cnh': 'CNH',
+                    'certificadoCurso': 'Certificado de Curso',
+                    'pis': 'Cartão do PIS',
+                    'historicoEscolar': 'Histórico Escolar',
+                    'vacinaCovid': 'Comprovante de Vacina - COVID-19'
+                };
+                return names[docId] || docId;
+            }
+            
+            // Mostrar alerta
+            function showAlert(message, type) {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${type}`;
+                alertDiv.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        ${type === 'success' ? 
+                            '<circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line>' :
+                            '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>'}
+                    </svg>
+                    <span>${message}</span>
+                `;
+                
+                // Adiciona o alerta no topo da página atual
+                const container = document.querySelector('.container.active');
+                if (container) {
+                    container.insertBefore(alertDiv, container.firstChild);
+                } else {
+                    document.body.appendChild(alertDiv);
+                }
+                
+                // Remove o alerta após 5 segundos
+                setTimeout(() => {
+                    alertDiv.style.opacity = '0';
+                    setTimeout(() => alertDiv.remove(), 300);
+                }, 5000);
+            }
+            
+            // Verifica autenticação
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    document.getElementById('loginContainer').style.display = 'none';
+                    document.getElementById('appContainer').style.display = 'block';
+                    showPage('cadastro');
+                    carregarFuncionarios();
+                    carregarListaPessoas();
+                } else {
+                    document.getElementById('loginContainer').style.display = 'flex';
+                    document.getElementById('appContainer').style.display = 'none';
+                }
+            });
+            
+            // Máscara para CPF
+            document.getElementById('cpf').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) value = value.substring(0, 11);
+                
+                // Aplica a máscara
+                if (value.length > 3 && value.length <= 6) {
+                    value = value.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+                } else if (value.length > 6 && value.length <= 9) {
+                    value = value.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+                } else if (value.length > 9) {
+                    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+                }
+                
+                e.target.value = value;
+            });
+            
+            // Máscara para CPF no controle de pessoas
+            document.getElementById('novaPessoaCPF').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) value = value.substring(0, 11);
+                e.target.value = value;
+            });
+            </script>
+    </body>
+    </html>
