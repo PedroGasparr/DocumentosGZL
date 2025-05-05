@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Documentos</title>
-    <link rel="icon" href="img/GZL - Logos_pages-to-jpg-0001.jpg">
+    <link rel="icon" href="img/f27651e8-0a8d-4460-b434-cc8e02929b8d.jpg">
     <!-- Link para Font Awesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Link para Google Fonts -->
@@ -12,7 +12,7 @@
 
     <style>
         :root {
-            --primary-color: #3c4c8b; /* Azul escuro da logo */
+            --primary-color: #364888; /* Azul escuro da logo */
             --secondary-color: #ebd53a; /* Amarelo da logo */
             --accent-color: #e74c3c; /* Vermelho para ações negativas */
             --light-color: #f8f9fa; /* Cinza bem claro */
@@ -311,7 +311,7 @@
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
         }
 
-        .btn:disabled {
+        .btn:disabled, .btn.disabled {
             background-color: #bdc3c7;
             cursor: not-allowed;
             transform: none;
@@ -620,6 +620,8 @@
             display: inline-flex;
             align-items: center;
             gap: 0.6rem;
+            border: none; /* Adicionado para consistência com outros botões */
+            cursor: pointer;
         }
 
         .btn-remover:hover {
@@ -726,6 +728,7 @@
              max-height: 2000px; /* Valor grande o suficiente para acomodar o conteúdo */
              padding-top: 1.5rem;
              padding-bottom: 1.5rem;
+             border-top: 1px solid #dee2e6; /* Adiciona a borda superior de volta quando expandido */
          }
 
 
@@ -997,7 +1000,7 @@
         <header>
             <div class="header-content">
                 <div class="logo-container">
-                    <img src="img/GZL - Logos_pages-to-jpg-0001.jpg" alt="Logo da Empresa" class="logo">
+                    <img src="img/f27651e8-0a8d-4460-b434-cc8e02929b8d.jpg" alt="Logo da Empresa" class="logo">
                     <h1>Sistema de Documentos</h1>
                 </div>
                 <nav>
@@ -1207,12 +1210,18 @@
                     <select id="cargo" required>
                         <option value="">Selecione o cargo</option>
                         <option value="assistente_logistica">Assistente de Logistica</option>
+                        <option value="assistente_RH">Assistente de RH</option>
                         <option value="auxiliar_expedicao">Auxiliar de Expedição</option>
+                        <option value="auxiliar_logistica">Auxiliar de Logistica</option>
                         <option value="auxiliar_logistica_1">Auxiliar de Logistica 1</option>
                         <option value="conferente_expedicao">Conferente de Expedição</option>
                         <option value="conferente_1">Conferente 1</option>
+                        <option value="Movimentador_Carga">Movimentador de Carga</option>
                         <option value="encarregado_logistica">Encarregado Logistica</option>
-                        <option value="mototrista_caminhao_1">Mototrista de Caminhão 1</option>
+                        <option value="mototrista_caminhao_1">Motorista de Caminhão 1</option>
+                        <option value="operador_Conferente_2">Operador Conferente 2</option>
+                        <option value="operador_Conferente_3">Operador Conferente 3</option>
+                        <option value="operador_Conferente_Expedição">Operador Conferente Expedição</option>
                         <option value="operador_empilhadeira_2">Operador de Empilhadeira 2</option>
                         <option value="operador_empilhadeira_3">Operador de Empilhadeira 3</option>
                         <option value="operador_logistico">Operador Logistico</option>
@@ -1249,19 +1258,19 @@
             <div id="documentosPessoais" class="section-content">
                 <div class="documento-item">
                     <label for="rg"><i class="fas fa-id-badge"></i> RG</label>
-                    <input type="file" id="rg" accept=".pdf,.jpg,.png" required>
+                    <input type="file" id="rg" required>
                 </div>
                 <div class="documento-item">
                     <label for="cpfDoc"><i class="fas fa-file-alt"></i> CPF (Documento)</label>
-                    <input type="file" id="cpfDoc" accept=".pdf,.jpg,.png" required>
+                    <input type="file" id="cpfDoc" required>
                 </div>
                 <div class="documento-item">
                     <label for="tituloEleitor"><i class="fas fa-vote-yea"></i> Título de Eleitor</label>
-                    <input type="file" id="tituloEleitor" accept=".pdf,.jpg,.png" required>
+                    <input type="file" id="tituloEleitor" required>
                 </div>
                 <div class="documento-item">
                     <label for="reservista"><i class="fas fa-medal"></i> Certidão de Reservista</label>
-                    <input type="file" id="reservista" accept=".pdf,.jpg,.png" required>
+                    <input type="file" id="reservista" required>
                 </div>
             </div>
 
@@ -1272,19 +1281,19 @@
             <div id="documentosFamiliares" class="section-content">
                 <div class="documento-item">
                     <label for="certidaoNascimento"><i class="fas fa-baby"></i> Certidão de Nascimento/Casamento</label>
-                    <input type="file" id="certidaoNascimento" accept=".pdf,.jpg,.png" required>
+                    <input type="file" id="certidaoNascimento" required>
                 </div>
                 <div class="documento-item" id="dependentesContainer" style="display: none;">
                     <label for="certidaoFilhos"><i class="fas fa-child-reaching"></i> Certidão de Nascimento dos Filhos</label>
-                    <input type="file" id="certidaoFilhos" accept=".pdf,.jpg,.png">
+                    <input type="file" id="certidaoFilhos">
                 </div>
                 <div class="documento-item" id="cpfDependentesContainer" style="display: none;">
                     <label for="cpfDependentes"><i class="fas fa-file-invoice"></i> CPF dos Dependentes</label>
-                    <input type="file" id="cpfDependentes" accept=".pdf,.jpg,.png">
+                    <input type="file" id="cpfDependentes">
                 </div>
                 <div class="documento-item" id="vacinaFilhosContainer" style="display: none;">
                     <label for="vacinaFilhos"><i class="fas fa-syringe"></i> Carteira de Vacinação dos Filhos</label>
-                    <input type="file" id="vacinaFilhos" accept=".pdf,.jpg,.png">
+                    <input type="file" id="vacinaFilhos">
                 </div>
             </div>
 
@@ -1295,7 +1304,7 @@
             <div id="documentosResidenciais" class="section-content">
                 <div class="documento-item">
                     <label for="comprovanteResidencia"><i class="fas fa-file-contract"></i> Comprovante de Residência</label>
-                    <input type="file" id="comprovanteResidencia" accept=".pdf,.jpg,.png" required>
+                    <input type="file" id="comprovanteResidencia" required>
                 </div>
             </div>
 
@@ -1306,27 +1315,27 @@
             <div id="outrosDocumentos" class="section-content">
                 <div class="documento-item">
                     <label for="foto3x4"><i class="fas fa-camera"></i> Foto 3x4</label>
-                    <input type="file" id="foto3x4" accept=".jpg,.png" required>
+                    <input type="file" id="foto3x4" required>
                 </div>
                 <div class="documento-item" id="cnhContainer" style="display: none;">
                     <label for="cnh"><i class="fas fa-car"></i> CNH</label>
-                    <input type="file" id="cnh" accept=".pdf,.jpg,.png">
+                    <input type="file" id="cnh">
                 </div>
                 <div class="documento-item" id="certificadoCursoContainer" style="display: none;">
                     <label for="certificadoCurso"><i class="fas fa-certificate"></i> Certificado de Curso Específico</label>
-                    <input type="file" id="certificadoCurso" accept=".pdf,.jpg,.png">
+                    <input type="file" id="certificadoCurso">
                 </div>
                  <div class="documento-item">
                     <label for="pis"><i class="fas fa-money-check-alt"></i> Cartão do PIS</label>
-                    <input type="file" id="pis" accept=".pdf,.jpg,.png" required>
+                    <input type="file" id="pis" required>
                 </div>
                 <div class="documento-item">
                     <label for="historicoEscolar"><i class="fas fa-graduation-cap"></i> Histórico Escolar</label>
-                    <input type="file" id="historicoEscolar" accept=".pdf,.jpg,.png">
+                    <input type="file" id="historicoEscolar">
                 </div>
                 <div class="documento-item">
                     <label for="vacinaCovid"><i class="fas fa-virus-slash"></i> Comprovante de Vacina - COVID-19</label>
-                    <input type="file" id="vacinaCovid" accept=".pdf,.jpg,.png" required>
+                    <input type="file" id="vacinaCovid" required>
                 </div>
             </div>
 
@@ -1391,7 +1400,7 @@
         <div id="senhaModal" class="modal">
             <div class="modal-content">
                 <h3 class="modal-title"><i class="fas fa-lock"></i> Acesso Restrito</h3>
-                <p>Digite a senha para acessar a área de funcionários:</p>
+                <p>Digite a senha para acessar esta área:</p>
                 <div class="form-group" style="margin-bottom: 0;">
                     <label for="senhaAcesso" class="sr-only">Senha de Acesso</label>
                     <input type="password" id="senhaAcesso" placeholder="Digite a senha">
@@ -1416,14 +1425,14 @@
         <script>
             // Configuração do Firebase
             const firebaseConfig = {
-                apiKey: "AIzaSyBZE7myNAPADs8yJx8ejr1qnaqV60U-LvU",
-                authDomain: "ritmo-44c20.firebaseapp.com",
-                databaseURL: "https://ritmo-44c20-default-rtdb.firebaseio.com",
-                projectId: "ritmo-44c20",
-                storageBucket: "ritmo-44c20.firebasestorage.app",
-                messagingSenderId: "784049161032",
-                appId: "1:784049161032:web:480bf33cb60e020ca3e97d",
-                measurementId: "G-DPYNXD0BNC"
+                apiKey: "AIzaSyBZE7myNAPADs8yJx8ejr1qnaqV60U-LvU", // SUBSTITUA PELA SUA CHAVE REAL
+                authDomain: "ritmo-44c20.firebaseapp.com", // SUBSTITUA PELO SEU DOMÍNIO REAL
+                databaseURL: "https://ritmo-44c20-default-rtdb.firebaseio.com", // SUBSTITUA PELA SUA URL REAL
+                projectId: "ritmo-44c20", // SUBSTITUA PELO SEU PROJECT ID REAL
+                storageBucket: "ritmo-44c20.firebasestorage.app", // SUBSTITUA PELO SEU STORAGE BUCKET REAL
+                messagingSenderId: "784049161032", // SUBSTITUA PELO SEU SENDER ID REAL
+                appId: "1:784049161032:web:480bf33cb60e020ca3e97d", // SUBSTITUA PELO SEU APP ID REAL
+                measurementId: "G-DPYNXD0BNC" // SUBSTITUA PELO SEU MEASUREMENT ID REAL
             };
 
             // Inicializa o Firebase
@@ -1450,7 +1459,7 @@
 
             // Estado da aplicação
             let currentFuncionarioId = null;
-            const SENHA_ADMIN = "PWESD233@#&"; // Senha para acessar áreas restritas
+            const SENHA_ADMIN = "PWESD233@#&"; // Senha para acessar áreas restritas (MUDAR PARA ALGO SEGURO E NÃO HARDCODADO EM PRODUÇÃO)
 
             // Função para mostrar página específica
             function showPage(pageId) {
@@ -1465,6 +1474,9 @@
                 if (activeNavBtn) {
                     activeNavBtn.classList.add('active');
                 }
+                 // Fecha o modal de senha se estiver aberto
+                 document.getElementById('senhaModal').style.display = 'none';
+                 document.getElementById('senhaAcesso').value = '';
             }
 
             // Alternar seções - Ajustada para garantir max-height alto
@@ -1519,6 +1531,10 @@
                     dependentesContainer.style.display = 'flex';
                     cpfDependentesContainer.style.display = 'flex';
                     vacinaFilhosContainer.style.display = 'flex';
+                    // Define required para campos de dependentes se 'sim'
+                     document.getElementById('certidaoFilhos').required = true;
+                     document.getElementById('cpfDependentes').required = true;
+                     document.getElementById('vacinaFilhos').required = true;
                 } else {
                     dependentesContainer.style.display = 'none';
                     cpfDependentesContainer.style.display = 'none';
@@ -1526,6 +1542,10 @@
                     document.getElementById('certidaoFilhos').value = '';
                     document.getElementById('cpfDependentes').value = '';
                     document.getElementById('vacinaFilhos').value = '';
+                     // Remove required para campos de dependentes se 'nao'
+                     document.getElementById('certidaoFilhos').required = false;
+                     document.getElementById('cpfDependentes').required = false;
+                     document.getElementById('vacinaFilhos').required = false;
                 }
 
                  const cnhContainer = document.getElementById('cnhContainer');
@@ -1534,11 +1554,17 @@
                  if (operaMaquina === 'sim') {
                      cnhContainer.style.display = 'flex';
                      certificadoCursoContainer.style.display = 'flex';
+                     // Define required para campos de máquina se 'sim'
+                     document.getElementById('cnh').required = true;
+                     document.getElementById('certificadoCurso').required = true;
                  } else {
                      cnhContainer.style.display = 'none';
                      certificadoCursoContainer.style.display = 'none';
                      document.getElementById('cnh').value = '';
                      document.getElementById('certificadoCurso').value = '';
+                     // Remove required para campos de máquina se 'nao'
+                     document.getElementById('cnh').required = false;
+                     document.getElementById('certificadoCurso').required = false;
                  }
             }
 
@@ -1558,39 +1584,20 @@
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const pageId = btn.dataset.page;
+                    // Remove o handler click anterior do confirmarBtn antes de adicionar um novo
+                    const confirmarBtn = document.getElementById('confirmarSenhaBtn');
+                    confirmarBtn.removeEventListener('click', handleConfirmSenha);
+                     document.getElementById('senhaAcesso').removeEventListener('keypress', handleSenhaKeyPress);
+
+
                     if (pageId === 'funcionarios' || pageId === 'controlePessoas') {
                         document.getElementById('senhaModal').style.display = 'flex';
                         document.getElementById('senhaAcesso').value = '';
                         document.getElementById('senhaAcesso').focus();
 
-                        const confirmarBtn = document.getElementById('confirmarSenhaBtn');
-                         // Limpa handlers anteriores para evitar acúmulo
-                        confirmarBtn.onclick = null;
-                        document.getElementById('senhaAcesso').onkeypress = null;
-
-
-                        confirmarBtn.onclick = function() {
-                            const senha = document.getElementById('senhaAcesso').value;
-                            if (senha === SENHA_ADMIN) {
-                                document.getElementById('senhaModal').style.display = 'none';
-                                showPage(pageId);
-                                document.getElementById('senhaAcesso').value = '';
-                                confirmarBtn.onclick = null; // Limpa o handler após sucesso
-                                document.getElementById('senhaAcesso').onkeypress = null; // Limpa keypress handler
-                            } else {
-                                alert('Senha incorreta!');
-                                document.getElementById('senhaAcesso').value = '';
-                                document.getElementById('senhaAcesso').focus();
-                            }
-                        };
-
-                         document.getElementById('senhaAcesso').onkeypress = function(event) {
-                             if (event.key === 'Enter') {
-                                 event.preventDefault();
-                                 confirmarBtn.click();
-                             }
-                         };
-
+                        // Adiciona o novo handler com a lógica para a página específica
+                        confirmarBtn.addEventListener('click', handleConfirmSenha.bind(null, pageId));
+                         document.getElementById('senhaAcesso').addEventListener('keypress', handleSenhaKeyPress.bind(null, confirmarBtn));
 
                     } else {
                         showPage(pageId);
@@ -1598,13 +1605,40 @@
                 });
             });
 
+            // Função para o handler de clique do botão Confirmar Senha
+            function handleConfirmSenha(pageId) {
+                const senha = document.getElementById('senhaAcesso').value;
+                if (senha === SENHA_ADMIN) {
+                    document.getElementById('senhaModal').style.display = 'none';
+                    showPage(pageId);
+                    document.getElementById('senhaAcesso').value = '';
+                     // Remove os handlers após sucesso
+                     document.getElementById('confirmarSenhaBtn').removeEventListener('click', handleConfirmSenha);
+                     document.getElementById('senhaAcesso').removeEventListener('keypress', handleSenhaKeyPress);
+
+                } else {
+                    alert('Senha incorreta!');
+                    document.getElementById('senhaAcesso').value = '';
+                    document.getElementById('senhaAcesso').focus();
+                }
+            }
+
+             // Função para o handler de keypress no campo Senha (permite Enter)
+             function handleSenhaKeyPress(confirmBtn, event) {
+                 if (event.key === 'Enter') {
+                     event.preventDefault();
+                     confirmBtn.click();
+                 }
+             }
+
+
             // Modal de Senha - Cancelar
             document.getElementById('cancelarSenhaBtn').addEventListener('click', () => {
                 document.getElementById('senhaModal').style.display = 'none';
                 document.getElementById('senhaAcesso').value = '';
-                 // Limpa handlers ao cancelar
-                 document.getElementById('confirmarSenhaBtn').onclick = null;
-                 document.getElementById('senhaAcesso').onkeypress = null;
+                 // Remove os handlers ao cancelar
+                 document.getElementById('confirmarSenhaBtn').removeEventListener('click', handleConfirmSenha);
+                 document.getElementById('senhaAcesso').removeEventListener('keypress', handleSenhaKeyPress);
             });
 
 
@@ -1681,8 +1715,18 @@
                 const temDependentes = document.getElementById('temDependentes').value;
                 const operaMaquina = document.getElementById('operaMaquina').value;
 
+                // Lista de documentos obrigatórios baseada nas seleções
+                 let documentosObrigatoriosParaValidacao = [...DOCUMENTOS_OBRIGATORIOS_BASE];
+                 if (temDependentes === 'sim') {
+                     documentosObrigatoriosParaValidacao.push('certidaoFilhos', 'cpfDependentes', 'vacinaFilhos');
+                 }
+                 if (operaMaquina === 'sim') {
+                     documentosObrigatoriosParaValidacao.push('cnh', 'certificadoCurso');
+                 }
+
+
                 if (!nome || !cpf || cpf.length !== 11 || !cargo || temDependentes === '' || operaMaquina === '') {
-                    showStatusMessage('Por favor, preencha todos os campos obrigatórios corretamente (verifique o CPF)', 'error');
+                    showStatusMessage('Por favor, preencha todos os campos de texto e seleções obrigatórios corretamente (verifique o CPF)', 'error');
                     // 3. Habilita o botão em caso de erro de validação
                     salvarBtn.disabled = false;
                     salvarBtn.textContent = 'Salvar Documentos';
@@ -1690,12 +1734,8 @@
                     return;
                 }
 
-                 let documentosObrigatoriosAtuais = [...DOCUMENTOS_OBRIGATORIOS_BASE];
-                 if (operaMaquina === 'sim') {
-                     documentosObrigatoriosAtuais.push('cnh', 'certificadoCurso');
-                 }
-
-                 for (const docId of documentosObrigatoriosAtuais) {
+                 // Validação de arquivos obrigatórios
+                 for (const docId of documentosObrigatoriosParaValidacao) {
                      const fileInput = document.getElementById(docId);
                      if (!fileInput || fileInput.files.length === 0) {
                          showStatusMessage(`Por favor, envie o documento obrigatório: ${getDocumentName(docId)}`, 'error');
@@ -1730,7 +1770,7 @@
 
                              funcionarioData.documentos[docId] = {
                                  nome: file.name,
-                                 tipo: file.type,
+                                 tipo: file.type, // Salva o tipo MIME
                                  tamanho: file.size,
                                  data: base64, // Salva como Base64
                                  dataUpload: new Date().toISOString()
@@ -1746,6 +1786,7 @@
 
                     showStatusMessage('Documentos salvos com sucesso!', 'success');
 
+                    // Limpa o formulário
                     document.getElementById('nome').value = '';
                     document.getElementById('cpf').value = '';
                     document.getElementById('cargo').value = '';
@@ -1799,10 +1840,15 @@
                         const funcionario = childSnapshot.val();
                         const funcionarioId = childSnapshot.key;
 
+                        // Determina quais documentos são obrigatórios para este funcionário específico
                         let documentosObrigatoriosParaContagem = [...DOCUMENTOS_OBRIGATORIOS_BASE];
+                        if (funcionario.temDependentes === 'sim') {
+                             documentosObrigatoriosParaContagem.push('certidaoFilhos', 'cpfDependentes', 'vacinaFilhos');
+                        }
                         if (funcionario.operaMaquina === 'sim') {
                              documentosObrigatoriosParaContagem.push('cnh', 'certificadoCurso');
                         }
+
 
                         const docsEntregues = funcionario.documentos ?
                             Object.keys(funcionario.documentos).filter(docId => documentosObrigatoriosParaContagem.includes(docId) && funcionario.documentos[docId] && funcionario.documentos[docId].data).length : 0; // Verifica se o campo 'data' existe
@@ -1812,7 +1858,7 @@
 
                         const percentual = totalDocsObrigatorios > 0 ? Math.round(
                             (docsEntregues / totalDocsObrigatorios) * 100
-                        ) : 100;
+                        ) : (totalDocsObrigatorios === 0 ? 100 : 0); // 100% se não houver obrigatórios, 0% se houver e nenhum enviado
 
 
                         const card = document.createElement('div');
@@ -1879,7 +1925,8 @@
                 };
 
                 for (const [categoria, docs] of Object.entries(categorias)) {
-                    const docsExistentes = docs.filter(doc => funcionario.documentos && funcionario.documentos[doc]);
+                    // Filtra os documentos que realmente existem para este funcionário
+                    const docsExistentes = docs.filter(doc => funcionario.documentos && funcionario.documentos[doc] && funcionario.documentos[doc].data);
 
                     if (docsExistentes.length > 0) {
                         const categoriaElement = document.createElement('div');
@@ -1893,9 +1940,11 @@
                             docElement.innerHTML = `
                                 <p><strong>${getDocumentName(docId)}</strong></p>
                                 <p>Arquivo: ${docData.nome}</p>
+                                <p>Tipo: ${docData.tipo || 'Desconhecido'}</p> <!-- Exibe o tipo MIME -->
                                 <p>Tamanho: ${formatBytes(docData.tamanho)}</p>
                                 <p>Data: ${new Date(docData.dataUpload).toLocaleDateString('pt-BR')}</p>
-                                <a href="${docData.data}" download="${funcionario.nome.replace(/\s+/g, '_')}_${docId}.${docData.nome.split('.').pop()}" class="download-btn"><i class="fas fa-download"></i> Baixar Documento</a>
+                                <!-- O link de download agora usa o Data URL -->
+                                <a href="${docData.data}" download="${funcionario.nome.replace(/\s+/g, '_')}_${docId}_${docData.nome}" class="download-btn"><i class="fas fa-download"></i> Baixar Documento</a>
                             `;
                             documentosContainer.appendChild(docElement);
                         });
@@ -1955,7 +2004,7 @@
 
             // Carregar lista de pessoas com filtro
             function carregarListaPessoas(filtro = '') {
-                pessoasRef.on('value', function(snapshot) {
+                pessoasRef.on('value', async function(snapshot) { // Usar async aqui
                     const listaPessoas = document.getElementById('listaPessoas');
                     listaPessoas.innerHTML = '';
 
@@ -1969,7 +2018,7 @@
                     });
 
                     // Usar Promise.all para aguardar a verificação de documentos
-                    Promise.all(pessoasArray.map(async (pessoaEntry) => {
+                    const cards = await Promise.all(pessoasArray.map(async (pessoaEntry) => {
                          const pessoa = pessoaEntry.val;
                          const pessoaId = pessoaEntry.key;
 
@@ -2004,25 +2053,27 @@
                          else totalPendentes++;
 
                          return card; // Retorna o card para ser adicionado depois
-                    })).then(cards => {
-                         // Adiciona os cards filtrados e processados
-                         cards.filter(card => card !== null).forEach(card => {
-                             listaPessoas.appendChild(card);
-                         });
+                    }));
 
-                         // Atualiza o resumo após todos os cards serem processados
-                         document.getElementById('totalPessoas').textContent = totalPessoas;
-                         document.getElementById('totalEnviados').textContent = totalEnviados;
-                         document.getElementById('totalPendentes').textContent = totalPendentes;
+                    // Adiciona os cards filtrados e processados
+                    cards.filter(card => card !== null).forEach(card => {
+                        listaPessoas.appendChild(card);
+                    });
 
-                         // Configura listeners para os botões de remover
-                         document.querySelectorAll('.btn-remover').forEach(btn => {
-                             btn.addEventListener('click', function() {
-                                 if (confirm(`Tem certeza que deseja remover a pessoa "${btn.closest('.pessoa-card').querySelector('h4').textContent.replace('<i class="fas fa-user-alt"></i> ', '').trim()}" da lista?`)) {
-                                     pessoasRef.child(btn.dataset.id).remove();
-                                 }
-                             });
-                         });
+                    // Atualiza o resumo após todos os cards serem processados
+                    document.getElementById('totalPessoas').textContent = totalPessoas;
+                    document.getElementById('totalEnviados').textContent = totalEnviados;
+                    document.getElementById('totalPendentes').textContent = totalPendentes;
+
+                    // Configura listeners para os botões de remover
+                    document.querySelectorAll('.btn-remover').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            // Pega o nome do h4 dentro do card pai
+                            const nomePessoa = btn.closest('.pessoa-card').querySelector('h4').textContent.replace('<i class="fas fa-user-alt"></i> ', '').trim();
+                            if (confirm(`Tem certeza que deseja remover a pessoa "${nomePessoa}" da lista?`)) {
+                                pessoasRef.child(btn.dataset.id).remove();
+                            }
+                        });
                     });
                 });
             }
@@ -2031,7 +2082,7 @@
             async function verificarDocumentosEnviados(nome, cpf) {
                 try {
                     const snapshot = await funcionariosRef.once('value');
-                    let encontrou = false;
+                    let encontrouDocumentos = false;
 
                     snapshot.forEach(childSnapshot => {
                         const funcionario = childSnapshot.val();
@@ -2042,16 +2093,15 @@
 
                              // Verifica se há documentos cadastrados para este funcionário
                              if (funcionario.documentos && Object.keys(funcionario.documentos).length > 0) {
-                                 // O critério de "enviado" pode ser ter pelo menos um documento,
-                                 // ou ter todos os documentos obrigatórios.
-                                 // Vamos usar o critério de ter pelo menos um documento cadastrado.
-                                 encontrou = true;
-                                 return true; // Sai do loop forEach
+                                 // Critério: Considera "enviado" se tiver pelo menos UM documento cadastrado.
+                                 // Se o critério for ter TODOS os documentos obrigatórios, a lógica precisaria ser ajustada.
+                                 encontrouDocumentos = true;
+                                 return true; // Sai do loop forEach assim que encontrar um funcionário correspondente com documentos
                              }
                         }
                     });
 
-                    return encontrou;
+                    return encontrouDocumentos;
                 } catch (error) {
                     console.error('Erro ao verificar documentos:', error);
                     return false;
@@ -2062,7 +2112,11 @@
             function formatarCPF(cpf) {
                 if (!cpf) return '';
                 cpf = String(cpf).padStart(11, '0');
-                return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+                // Adiciona máscara somente se o CPF tiver 11 dígitos
+                if (cpf.length === 11) {
+                    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+                }
+                 return cpf; // Retorna sem máscara se não tiver 11 dígitos
             }
 
             function formatarData(dataString) {
