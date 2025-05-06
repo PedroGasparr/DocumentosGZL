@@ -976,14 +976,14 @@
             <h1>Sistema de Documentos</h1>
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="email"><i class="fas fa-envelope"></i> E-mail</label>
-                    <input type="email" id="email" required placeholder="Digite seu e-mail">
+                    <!-- <label for="email"><i class="fas fa-envelope"></i> E-mail</label>
+                    <input type="email" id="email" required placeholder="Digite seu e-mail"> -->
                 </div>
                 <div class="form-group">
-                    <label for="senha"><i class="fas fa-lock"></i> Senha</label>
-                    <input type="password" id="senha" required placeholder="Digite sua senha">
+                    <!-- <label for="senha"><i class="fas fa-lock"></i> Senha</label>
+                    <input type="password" id="senha" required placeholder="Digite sua senha"> -->
                 </div>
-                <button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+                <!-- <button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i> Entrar</button> -->
             </form>
 
             <div class="login-options">
@@ -1424,22 +1424,21 @@
 
         <script>
             // Configuração do Firebase
-            const firebaseConfig = {
-                apiKey: "AIzaSyBZE7myNAPADs8yJx8ejr1qnaqV60U-LvU", // SUBSTITUA PELA SUA CHAVE REAL
-                authDomain: "ritmo-44c20.firebaseapp.com", // SUBSTITUA PELO SEU DOMÍNIO REAL
-                databaseURL: "https://ritmo-44c20-default-rtdb.firebaseio.com", // SUBSTITUA PELA SUA URL REAL
-                projectId: "ritmo-44c20", // SUBSTITUA PELO SEU PROJECT ID REAL
-                storageBucket: "ritmo-44c20.firebasestorage.app", // SUBSTITUA PELO SEU STORAGE BUCKET REAL
-                messagingSenderId: "784049161032", // SUBSTITUA PELO SEU SENDER ID REAL
-                appId: "1:784049161032:web:480bf33cb60e020ca3e97d", // SUBSTITUA PELO SEU APP ID REAL
-                measurementId: "G-DPYNXD0BNC" // SUBSTITUA PELO SEU MEASUREMENT ID REAL
-            };
+                    const firebaseConfig = {
+            apiKey: "AIzaSyAvWJeddnSspl1qQbwX77wAcZnTH4Yacjc",
+            authDomain: "documentosgzl.firebaseapp.com",
+            projectId: "documentosgzl",
+            storageBucket: "documentosgzl.firebasestorage.app",
+            messagingSenderId: "254349635604",
+            appId: "1:254349635604:web:1809b9e6dfccb625453701",
+            measurementId: "G-LVCQXW7Q56"
+        };
 
             // Inicializa o Firebase
             firebase.initializeApp(firebaseConfig);
             const auth = firebase.auth();
             const database = firebase.database();
-            const storage = firebase.storage();
+            const storage = firebase.storage(); // Mantido caso decida voltar a usar storage
             const funcionariosRef = database.ref('funcionarios');
             const pessoasRef = database.ref('pessoasControle');
 
@@ -1586,8 +1585,15 @@
                     const pageId = btn.dataset.page;
                     // Remove o handler click anterior do confirmarBtn antes de adicionar um novo
                     const confirmarBtn = document.getElementById('confirmarSenhaBtn');
-                    confirmarBtn.removeEventListener('click', handleConfirmSenha);
-                     document.getElementById('senhaAcesso').removeEventListener('keypress', handleSenhaKeyPress);
+                    // Verifica se o handler já existe antes de remover
+                    if (confirmarBtn._clickHandler) {
+                         confirmarBtn.removeEventListener('click', confirmarBtn._clickHandler);
+                         confirmarBtn._clickHandler = null; // Limpa a referência
+                    }
+                    if (document.getElementById('senhaAcesso')._keypressHandler) {
+                         document.getElementById('senhaAcesso').removeEventListener('keypress', document.getElementById('senhaAcesso')._keypressHandler);
+                         document.getElementById('senhaAcesso')._keypressHandler = null; // Limpa a referência
+                    }
 
 
                     if (pageId === 'funcionarios' || pageId === 'controlePessoas') {
@@ -1595,9 +1601,15 @@
                         document.getElementById('senhaAcesso').value = '';
                         document.getElementById('senhaAcesso').focus();
 
-                        // Adiciona o novo handler com a lógica para a página específica
-                        confirmarBtn.addEventListener('click', handleConfirmSenha.bind(null, pageId));
-                         document.getElementById('senhaAcesso').addEventListener('keypress', handleSenhaKeyPress.bind(null, confirmarBtn));
+                        // Adiciona o novo handler com a lógica para a página específica e armazena a referência
+                        const newClickHandler = handleConfirmSenha.bind(null, pageId);
+                         confirmarBtn.addEventListener('click', newClickHandler);
+                         confirmarBtn._clickHandler = newClickHandler; // Armazena a referência
+
+                        const newKeyPressHandler = handleSenhaKeyPress.bind(null, confirmarBtn);
+                         document.getElementById('senhaAcesso').addEventListener('keypress', newKeyPressHandler);
+                         document.getElementById('senhaAcesso')._keypressHandler = newKeyPressHandler; // Armazena a referência
+
 
                     } else {
                         showPage(pageId);
@@ -1613,8 +1625,16 @@
                     showPage(pageId);
                     document.getElementById('senhaAcesso').value = '';
                      // Remove os handlers após sucesso
-                     document.getElementById('confirmarSenhaBtn').removeEventListener('click', handleConfirmSenha);
-                     document.getElementById('senhaAcesso').removeEventListener('keypress', handleSenhaKeyPress);
+                     const confirmarBtn = document.getElementById('confirmarSenhaBtn');
+                     if (confirmarBtn._clickHandler) {
+                         confirmarBtn.removeEventListener('click', confirmarBtn._clickHandler);
+                         confirmarBtn._clickHandler = null;
+                     }
+                     if (document.getElementById('senhaAcesso')._keypressHandler) {
+                         document.getElementById('senhaAcesso').removeEventListener('keypress', document.getElementById('senhaAcesso')._keypressHandler);
+                         document.getElementById('senhaAcesso')._keypressHandler = null;
+                     }
+
 
                 } else {
                     alert('Senha incorreta!');
@@ -1637,8 +1657,15 @@
                 document.getElementById('senhaModal').style.display = 'none';
                 document.getElementById('senhaAcesso').value = '';
                  // Remove os handlers ao cancelar
-                 document.getElementById('confirmarSenhaBtn').removeEventListener('click', handleConfirmSenha);
-                 document.getElementById('senhaAcesso').removeEventListener('keypress', handleSenhaKeyPress);
+                 const confirmarBtn = document.getElementById('confirmarSenhaBtn');
+                 if (confirmarBtn._clickHandler) {
+                     confirmarBtn.removeEventListener('click', confirmarBtn._clickHandler);
+                     confirmarBtn._clickHandler = null;
+                 }
+                 if (document.getElementById('senhaAcesso')._keypressHandler) {
+                     document.getElementById('senhaAcesso').removeEventListener('keypress', document.getElementById('senhaAcesso')._keypressHandler);
+                     document.getElementById('senhaAcesso')._keypressHandler = null;
+                 }
             });
 
 
@@ -1650,11 +1677,7 @@
 
                 auth.signInWithEmailAndPassword(email, senha)
                     .then(() => {
-                        document.getElementById('loginContainer').style.display = 'none';
-                        document.getElementById('appContainer').style.display = 'flex';
-                        showPage('cadastro');
-                        carregarFuncionarios();
-                        carregarListaPessoas();
+                        // onAuthStateChanged vai lidar com a transição de página
                     })
                     .catch(error => {
                         alert('Erro ao fazer login: ' + error.message);
@@ -1678,8 +1701,7 @@
             document.getElementById('logoutBtn').addEventListener('click', () => {
                 auth.signOut()
                     .then(() => {
-                        document.getElementById('loginContainer').style.display = 'flex';
-                        document.getElementById('appContainer').style.display = 'none';
+                        // onAuthStateChanged vai lidar com a transição de página
                     });
             });
 
@@ -1705,7 +1727,7 @@
 
                 // 1. Desabilita o botão imediatamente
                 salvarBtn.disabled = true;
-                salvarBtn.textContent = 'Salvando...'; // Opcional: Mudar texto para indicar processamento
+                salvarBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...'; // Ícone de carregamento
                 salvarBtn.classList.add('disabled'); // Adiciona classe para estilo disabled
 
 
@@ -1715,7 +1737,7 @@
                 const temDependentes = document.getElementById('temDependentes').value;
                 const operaMaquina = document.getElementById('operaMaquina').value;
 
-                // Lista de documentos obrigatórios baseada nas seleções
+                // Lista de documentos obrigatórios baseada nas seleções para validação
                  let documentosObrigatoriosParaValidacao = [...DOCUMENTOS_OBRIGATORIOS_BASE];
                  if (temDependentes === 'sim') {
                      documentosObrigatoriosParaValidacao.push('certidaoFilhos', 'cpfDependentes', 'vacinaFilhos');
@@ -1729,7 +1751,7 @@
                     showStatusMessage('Por favor, preencha todos os campos de texto e seleções obrigatórios corretamente (verifique o CPF)', 'error');
                     // 3. Habilita o botão em caso de erro de validação
                     salvarBtn.disabled = false;
-                    salvarBtn.textContent = 'Salvar Documentos';
+                    salvarBtn.innerHTML = '<i class="fas fa-save"></i> Salvar Documentos';
                     salvarBtn.classList.remove('disabled');
                     return;
                 }
@@ -1741,7 +1763,7 @@
                          showStatusMessage(`Por favor, envie o documento obrigatório: ${getDocumentName(docId)}`, 'error');
                           // 3. Habilita o botão em caso de erro de validação
                          salvarBtn.disabled = false;
-                         salvarBtn.textContent = 'Salvar Documentos';
+                         salvarBtn.innerHTML = '<i class="fas fa-save"></i> Salvar Documentos';
                          salvarBtn.classList.remove('disabled');
                          return;
                      }
@@ -1766,6 +1788,13 @@
                          const fileInput = document.getElementById(docId);
                          if (fileInput && fileInput.files.length > 0) {
                              const file = fileInput.files[0];
+
+                             // Verifica o tamanho do arquivo antes de converter para Base64
+                             const maxSizeMB = 5; // Define um limite razoável, ajuste conforme necessário
+                             if (file.size > maxSizeMB * 1024 * 1024) {
+                                 throw new Error(`O arquivo "${file.name}" é muito grande (${formatBytes(file.size)}). O tamanho máximo permitido é ${maxSizeMB} MB.`);
+                             }
+
                              const base64 = await fileParaBase64(file);
 
                              funcionarioData.documentos[docId] = {
@@ -1825,7 +1854,7 @@
                 } finally {
                     // 2. Habilita o botão após a conclusão (sucesso ou erro)
                     salvarBtn.disabled = false;
-                    salvarBtn.textContent = 'Salvar Documentos';
+                    salvarBtn.innerHTML = '<i class="fas fa-save"></i> Salvar Documentos';
                     salvarBtn.classList.remove('disabled');
                 }
             });
@@ -1925,7 +1954,7 @@
                 };
 
                 for (const [categoria, docs] of Object.entries(categorias)) {
-                    // Filtra os documentos que realmente existem para este funcionário
+                    // Filtra os documentos que realmente existem e possuem dados para este funcionário
                     const docsExistentes = docs.filter(doc => funcionario.documentos && funcionario.documentos[doc] && funcionario.documentos[doc].data);
 
                     if (docsExistentes.length > 0) {
@@ -2039,17 +2068,42 @@
                              </div>
                          `;
 
-                         const enviou = await verificarDocumentosEnviados(pessoa.nome, pessoa.cpf);
+                         // Verifica se o funcionário correspondente existe e tem documentos
+                         const funcionarioSnapshot = await funcionariosRef.orderByChild('nome').equalTo(pessoa.nome).once('value');
+                         let encontrouFuncionarioComDocs = false;
+                         if (funcionarioSnapshot.exists()) {
+                              let cpfMatchFound = false;
+                              funcionarioSnapshot.forEach(funcChildSnapshot => {
+                                 const func = funcChildSnapshot.val();
+                                 // Prioriza a correspondência por CPF se ele existir na pessoa
+                                 if (pessoa.cpf) {
+                                     if (func.cpf === pessoa.cpf && func.documentos && Object.keys(func.documentos).length > 0) {
+                                         encontrouFuncionarioComDocs = true;
+                                         cpfMatchFound = true;
+                                         return true; // Sai do forEach interno
+                                     }
+                                 } else {
+                                      // Se não tiver CPF na pessoa, verifica apenas pelo nome (menos preciso)
+                                      if (func.documentos && Object.keys(func.documentos).length > 0) {
+                                          encontrouFuncionarioComDocs = true;
+                                          return true; // Sai do forEach interno
+                                      }
+                                 }
+                              });
+                               // Se encontrou por CPF, já pode sair do forEach externo
+                              if (cpfMatchFound) return true;
+                         }
+
 
                          const statusElement = document.createElement('p');
-                         statusElement.innerHTML = `Status: <span class="${enviou ? 'status-enviado' : 'status-pendente'}">${
-                             enviou ? '<i class="fas fa-check-circle"></i> Documentos Enviados' : '<i class="fas fa-exclamation-triangle"></i> Documentos Pendentes'
+                         statusElement.innerHTML = `Status: <span class="${encontrouFuncionarioComDocs ? 'status-enviado' : 'status-pendente'}">${
+                             encontrouFuncionarioComDocs ? '<i class="fas fa-check-circle"></i> Documentos Enviados' : '<i class="fas fa-exclamation-triangle"></i> Documentos Pendentes'
                          }</span>`;
 
                          const nomeElement = card.querySelector('h4');
                          nomeElement.insertAdjacentElement('afterend', statusElement);
 
-                         if (enviou) totalEnviados++;
+                         if (encontrouFuncionarioComDocs) totalEnviados++;
                          else totalPendentes++;
 
                          return card; // Retorna o card para ser adicionado depois
@@ -2059,11 +2113,6 @@
                     cards.filter(card => card !== null).forEach(card => {
                         listaPessoas.appendChild(card);
                     });
-
-                    // Atualiza o resumo após todos os cards serem processados
-                    document.getElementById('totalPessoas').textContent = totalPessoas;
-                    document.getElementById('totalEnviados').textContent = totalEnviados;
-                    document.getElementById('totalPendentes').textContent = totalPendentes;
 
                     // Configura listeners para os botões de remover
                     document.querySelectorAll('.btn-remover').forEach(btn => {
@@ -2075,33 +2124,54 @@
                             }
                         });
                     });
+
+                     // Atualiza o resumo após todos os cards serem processados e adicionados
+                     // (A contagem de totalPessoas, totalEnviados, totalPendentes já foi feita no loop)
+                     document.getElementById('totalPessoas').textContent = totalPessoas;
+                     document.getElementById('totalEnviados').textContent = totalEnviados;
+                     document.getElementById('totalPendentes').textContent = totalPendentes;
+
                 });
             }
+
 
             // Verificar se documentos foram enviados (agora verifica se há dados Base64)
             async function verificarDocumentosEnviados(nome, cpf) {
                 try {
-                    const snapshot = await funcionariosRef.once('value');
-                    let encontrouDocumentos = false;
+                    // Tenta encontrar por CPF primeiro, se existir
+                    if (cpf) {
+                         const cpfSnapshot = await funcionariosRef.orderByChild('cpf').equalTo(cpf).once('value');
+                         if (cpfSnapshot.exists()) {
+                             let foundByCpf = false;
+                             cpfSnapshot.forEach(childSnapshot => {
+                                 const func = childSnapshot.val();
+                                 // Verifica se tem documentos
+                                 if (func.documentos && Object.keys(func.documentos).length > 0) {
+                                     foundByCpf = true;
+                                     return true; // Sai do forEach
+                                 }
+                             });
+                             if (foundByCpf) return true;
+                         }
+                    }
 
-                    snapshot.forEach(childSnapshot => {
-                        const funcionario = childSnapshot.val();
-
-                        // Verifica se o nome ou CPF correspondem
-                        if (funcionario && (funcionario.nome.toLowerCase() === nome.toLowerCase() ||
-                            (cpf && funcionario.cpf === cpf))) {
-
-                             // Verifica se há documentos cadastrados para este funcionário
-                             if (funcionario.documentos && Object.keys(funcionario.documentos).length > 0) {
-                                 // Critério: Considera "enviado" se tiver pelo menos UM documento cadastrado.
-                                 // Se o critério for ter TODOS os documentos obrigatórios, a lógica precisaria ser ajustada.
-                                 encontrouDocumentos = true;
-                                 return true; // Sai do loop forEach assim que encontrar um funcionário correspondente com documentos
+                    // Se não encontrou por CPF ou CPF não existe, tenta encontrar por nome
+                    const nomeSnapshot = await funcionariosRef.orderByChild('nome').equalTo(nome).once('value');
+                    if (nomeSnapshot.exists()) {
+                         let foundByName = false;
+                         nomeSnapshot.forEach(childSnapshot => {
+                             const func = childSnapshot.val();
+                             // Verifica se tem documentos
+                             if (func.documentos && Object.keys(func.documentos).length > 0) {
+                                 foundByName = true;
+                                 return true; // Sai do forEach
                              }
-                        }
-                    });
+                         });
+                         if (foundByName) return true;
+                    }
 
-                    return encontrouDocumentos;
+
+                    return false; // Não encontrou funcionário correspondente com documentos
                 } catch (error) {
                     console.error('Erro ao verificar documentos:', error);
                     return false;
@@ -2131,12 +2201,18 @@
             function formatarCargo(cargoKey) {
                  const cargos = {
                     'assistente_logistica': 'Assistente de Logística',
+                    'assistente_RH': 'Assistente de RH',
                     'auxiliar_expedicao': 'Auxiliar de Expedição',
+                    'auxiliar_logistica': 'Auxiliar de Logística',
                     'auxiliar_logistica_1': 'Auxiliar de Logística 1',
                     'conferente_expedicao': 'Conferente de Expedição',
                     'conferente_1': 'Conferente 1',
+                    'Movimentador_Carga': 'Movimentador de Carga',
                     'encarregado_logistica': 'Encarregado Logística',
-                    'mototrista_caminhao_1': 'Mototrista de Caminhão 1',
+                    'mototrista_caminhao_1': 'Motorista de Caminhão 1',
+                    'operador_Conferente_2': 'Operador Conferente 2',
+                    'operador_Conferente_3': 'Operador Conferente 3',
+                    'operador_Conferente_Expedição': 'Operador Conferente Expedição',
                     'operador_empilhadeira_2': 'Operador de Empilhadeira 2',
                     'operador_empilhadeira_3': 'Operador de Empilhadeira 3',
                     'operador_logistico': 'Operador Logístico',
